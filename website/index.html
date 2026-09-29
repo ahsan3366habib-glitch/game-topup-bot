@@ -2,7 +2,7 @@
 <html lang="bn">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>TopUpZone BD | Game Top Up</title>
 
 <style>
@@ -13,32 +13,28 @@
   font-family:Arial,Helvetica,sans-serif;
 }
 
+html{scroll-behavior:smooth}
+
 body{
   background:#020611;
   color:#fff;
   overflow-x:hidden;
 }
 
-a{
-  text-decoration:none;
-  color:inherit;
-}
-
-button{
-  font-family:inherit;
-}
+a{text-decoration:none;color:inherit}
+button{font-family:inherit}
 
 /* HEADER */
 header{
   position:sticky;
   top:0;
   z-index:1000;
-  height:76px;
+  min-height:76px;
   display:flex;
   align-items:center;
   justify-content:space-between;
   padding:8px 4%;
-  background:rgba(2,6,17,.94);
+  background:rgba(2,6,17,.95);
   border-bottom:1px solid #168cff;
   backdrop-filter:blur(15px);
   box-shadow:0 0 25px rgba(0,136,255,.25);
@@ -60,102 +56,60 @@ header{
 .brand{
   font-size:25px;
   font-weight:900;
-  letter-spacing:.5px;
 }
 
-.brand span{
-  color:#00c8ff;
-}
+.brand span{color:#00c8ff}
 
 .tagline{
   font-size:9px;
-  letter-spacing:4px;
+  letter-spacing:3px;
   color:#80dfff;
-  margin-top:2px;
+  margin-top:3px;
 }
 
 nav{
   display:flex;
   align-items:center;
-  gap:8px;
+  gap:6px;
 }
 
 nav a{
-  padding:12px 17px;
+  padding:11px 13px;
   border-radius:9px;
   font-weight:bold;
-  font-size:14px;
+  font-size:13px;
   transition:.3s;
 }
 
-nav a:hover,
-nav a.active{
+nav a:hover{
   background:linear-gradient(135deg,#0077ff,#00d9ff);
   box-shadow:0 0 18px #008cff;
 }
 
 .admin{
   background:linear-gradient(135deg,#0066ff,#00bfff);
-  box-shadow:0 0 15px rgba(0,170,255,.5);
-}
-
-/* MOBILE MENU */
-.menu-btn{
-  display:none;
-  font-size:28px;
-  cursor:pointer;
 }
 
 /* HERO */
 .hero{
   position:relative;
-  width:100%;
   min-height:430px;
   overflow:hidden;
-  background:
-    radial-gradient(circle at 20% 40%,rgba(0,180,255,.35),transparent 35%),
-    radial-gradient(circle at 80% 60%,rgba(50,0,255,.3),transparent 35%),
-    linear-gradient(135deg,#030b22,#001b3b,#050018);
 }
 
-.hero::before{
-  content:"";
-  position:absolute;
-  width:500px;
-  height:500px;
-  border-radius:50%;
-  border:1px solid rgba(0,200,255,.2);
-  left:-180px;
-  top:-100px;
-  animation:spin 12s linear infinite;
-}
-
-.hero::after{
-  content:"";
-  position:absolute;
-  width:350px;
-  height:350px;
-  border-radius:50%;
-  border:1px solid rgba(0,100,255,.2);
-  right:-100px;
-  bottom:-100px;
-  animation:spin 9s linear infinite reverse;
-}
-
-@keyframes spin{
-  to{transform:rotate(360deg)}
+.slider{
+  position:relative;
+  width:100%;
+  height:430px;
+  overflow:hidden;
 }
 
 .slide{
   position:absolute;
   inset:0;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:45px 7%;
   opacity:0;
-  transform:scale(1.04);
-  transition:opacity .8s,transform 1s;
+  transform:scale(1.06);
+  transition:opacity .9s ease,transform 1.2s ease;
   pointer-events:none;
 }
 
@@ -165,96 +119,66 @@ nav a.active{
   pointer-events:auto;
 }
 
-.slide-text{
-  width:53%;
-  position:relative;
-  z-index:2;
-}
-
-.badge{
-  display:inline-block;
-  padding:8px 15px;
-  border:1px solid #00d9ff;
-  border-radius:30px;
-  color:#00e1ff;
-  background:rgba(0,200,255,.08);
-  box-shadow:0 0 15px rgba(0,200,255,.3);
-  font-weight:bold;
-  margin-bottom:18px;
-}
-
-.slide h1{
-  font-size:55px;
-  line-height:1.05;
-  margin-bottom:15px;
-}
-
-.slide h1 span{
-  color:#00d9ff;
-  text-shadow:0 0 25px #008cff;
-}
-
-.slide p{
-  font-size:18px;
-  color:#d5eaff;
-  line-height:1.7;
-  margin-bottom:25px;
-}
-
-.hero-btn{
-  display:inline-block;
-  padding:14px 30px;
-  border-radius:30px;
-  background:linear-gradient(90deg,#006cff,#00d9ff);
-  font-weight:900;
-  box-shadow:0 0 25px rgba(0,180,255,.55);
-  transition:.3s;
-}
-
-.hero-btn:hover{
-  transform:translateY(-3px) scale(1.03);
-}
-
-.character{
-  width:42%;
-  height:310px;
-  border-radius:30px;
-  background:
-    radial-gradient(circle,#00cfff55,transparent 45%),
-    linear-gradient(145deg,#071c42,#020611);
-  border:1px solid #00aaff;
-  box-shadow:0 0 45px rgba(0,160,255,.35);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:120px;
-  animation:float 3s ease-in-out infinite;
-}
-
-@keyframes float{
-  50%{transform:translateY(-12px)}
-}
-
-.arrows{
-  position:absolute;
-  z-index:10;
+.slide img{
   width:100%;
-  top:50%;
-  display:flex;
-  justify-content:space-between;
-  padding:0 18px;
-  transform:translateY(-50%);
+  height:100%;
+  object-fit:cover;
+  display:block;
 }
 
-.arrow{
-  width:45px;
-  height:45px;
+/* Different colour overlay for each banner */
+.slide:nth-child(1)::after,
+.slide:nth-child(2)::after,
+.slide:nth-child(3)::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+}
+
+.slide:nth-child(1)::after{
+  background:linear-gradient(90deg,
+    rgba(0,30,90,.72),
+    rgba(0,120,255,.15),
+    rgba(0,0,0,.35));
+}
+
+.slide:nth-child(2)::after{
+  background:linear-gradient(90deg,
+    rgba(75,0,100,.70),
+    rgba(220,0,120,.15),
+    rgba(0,0,0,.35));
+}
+
+.slide:nth-child(3)::after{
+  background:linear-gradient(90deg,
+    rgba(90,35,0,.70),
+    rgba(255,110,0,.15),
+    rgba(0,0,0,.35));
+}
+
+/* Slider controls */
+.prev,.next{
+  position:absolute;
+  top:50%;
+  transform:translateY(-50%);
+  z-index:20;
+  width:46px;
+  height:46px;
   border-radius:50%;
-  border:1px solid #00bfff;
-  background:#00142ccc;
+  border:1px solid #00d9ff;
+  background:rgba(0,15,35,.75);
   color:white;
   font-size:25px;
   cursor:pointer;
+}
+
+.prev{left:18px}
+.next{right:18px}
+
+.prev:hover,.next:hover{
+  background:#007cff;
+  box-shadow:0 0 20px #00bfff;
 }
 
 .dots{
@@ -262,27 +186,27 @@ nav a.active{
   bottom:18px;
   left:50%;
   transform:translateX(-50%);
+  z-index:30;
   display:flex;
   gap:8px;
-  z-index:20;
 }
 
 .dot{
   width:10px;
   height:10px;
-  border-radius:50%;
-  background:#718094;
+  border-radius:20px;
+  background:#9aa8b8;
   cursor:pointer;
+  transition:.3s;
 }
 
 .dot.active{
   width:28px;
-  border-radius:10px;
   background:#00d9ff;
   box-shadow:0 0 12px #00d9ff;
 }
 
-/* TRUST BAR */
+/* TRUST */
 .trust{
   display:grid;
   grid-template-columns:repeat(4,1fr);
@@ -295,7 +219,7 @@ nav a.active{
 
 .trust-box{
   text-align:center;
-  padding:12px;
+  padding:14px 8px;
   border-radius:12px;
   background:linear-gradient(145deg,#07172c,#030914);
   border:1px solid #0a4775;
@@ -314,7 +238,7 @@ nav a.active{
   color:#9db7d3;
 }
 
-/* SECTION */
+/* GENERAL */
 .section{
   padding:55px 5%;
   max-width:1400px;
@@ -323,7 +247,7 @@ nav a.active{
 
 .section-title{
   text-align:center;
-  margin-bottom:35px;
+  margin-bottom:32px;
 }
 
 .section-title small{
@@ -344,7 +268,7 @@ nav a.active{
 }
 
 .game{
-  min-height:150px;
+  min-height:155px;
   border:1px solid #07518a;
   border-radius:17px;
   background:linear-gradient(145deg,#071a34,#030914);
@@ -352,24 +276,15 @@ nav a.active{
   flex-direction:column;
   align-items:center;
   justify-content:center;
-  gap:10px;
+  gap:9px;
   cursor:pointer;
   transition:.35s;
   position:relative;
   overflow:hidden;
 }
 
-.game::before{
-  content:"";
-  position:absolute;
-  width:100%;
-  height:2px;
-  top:0;
-  background:linear-gradient(90deg,transparent,#00d9ff,transparent);
-}
-
 .game:hover{
-  transform:translateY(-8px);
+  transform:translateY(-7px);
   border-color:#00d9ff;
   box-shadow:0 0 25px rgba(0,180,255,.3);
 }
@@ -378,12 +293,21 @@ nav a.active{
   font-size:48px;
 }
 
-.game h3{
-  font-size:18px;
+.game h3{font-size:18px}
+
+.game small{color:#8ea8c5}
+
+.game button{
+  padding:7px 15px;
+  border:0;
+  border-radius:20px;
+  background:#087dff;
+  color:white;
+  font-weight:bold;
 }
 
-.game small{
-  color:#8ea8c5;
+.coming{
+  opacity:.7;
 }
 
 /* PACKAGES */
@@ -408,7 +332,6 @@ nav a.active{
 .tab.active{
   background:linear-gradient(90deg,#006dff,#00d5ff);
   color:#fff;
-  border-color:#00d9ff;
 }
 
 .products{
@@ -432,14 +355,14 @@ nav a.active{
   box-shadow:0 0 20px rgba(0,200,255,.2);
 }
 
-.diamond{
+.product-icon{
   font-size:40px;
   margin-bottom:10px;
 }
 
 .product h3{
   font-size:17px;
-  margin-bottom:7px;
+  min-height:40px;
 }
 
 .price{
@@ -472,7 +395,7 @@ nav a.active{
 }
 
 .form-group{
-  margin-bottom:17px;
+  margin-bottom:18px;
 }
 
 .form-group label{
@@ -496,6 +419,11 @@ input:focus,select:focus{
   box-shadow:0 0 10px rgba(0,210,255,.2);
 }
 
+select option{
+  background:#020914;
+  color:white;
+}
+
 .payments{
   display:grid;
   grid-template-columns:repeat(3,1fr);
@@ -503,17 +431,25 @@ input:focus,select:focus{
 }
 
 .pay{
-  padding:13px;
+  padding:14px 8px;
   border-radius:10px;
   background:#081b31;
   border:1px solid #164c70;
   text-align:center;
   cursor:pointer;
+  transition:.2s;
 }
 
-.pay.selected{
+.pay:hover,.pay.selected{
   border-color:#00d9ff;
   background:#06335a;
+}
+
+.pay span{
+  display:block;
+  color:#a9c9df;
+  font-size:12px;
+  margin-top:5px;
 }
 
 .submit{
@@ -526,7 +462,6 @@ input:focus,select:focus{
   font-size:17px;
   font-weight:900;
   cursor:pointer;
-  box-shadow:0 0 20px rgba(0,190,255,.3);
 }
 
 /* SUPPORT */
@@ -542,6 +477,12 @@ input:focus,select:focus{
   border-radius:16px;
   border:1px solid #164d78;
   background:#06152a;
+  transition:.3s;
+}
+
+.support-card:hover{
+  transform:translateY(-5px);
+  border-color:#00d9ff;
 }
 
 .support-card .big{
@@ -554,4 +495,789 @@ input:focus,select:focus{
 }
 
 .support-card p{
-  color:#a9c3d
+  color:#a9c3d9;
+  margin:5px 0;
+}
+
+.support-card a{
+  display:inline-block;
+  margin-top:12px;
+  padding:9px 16px;
+  border-radius:20px;
+  background:#087dff;
+  font-weight:bold;
+}
+
+/* FOOTER */
+footer{
+  padding:30px 5%;
+  text-align:center;
+  border-top:1px solid #0b3b61;
+  background:#01040a;
+  color:#7993aa;
+}
+
+footer strong{
+  color:#00d9ff;
+}
+
+/* MOBILE */
+@media(max-width:950px){
+
+  nav{
+    display:none;
+  }
+
+  .admin{
+    display:none;
+  }
+
+  .slider{
+    height:330px;
+  }
+
+  .trust{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .games{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .products{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .support{
+    grid-template-columns:1fr;
+  }
+}
+
+@media(max-width:600px){
+
+  header{
+    min-height:68px;
+  }
+
+  .logo-area img{
+    width:48px;
+    height:48px;
+  }
+
+  .brand{
+    font-size:19px;
+  }
+
+  .tagline{
+    font-size:7px;
+  }
+
+  .slider{
+    height:220px;
+  }
+
+  .prev,.next{
+    width:36px;
+    height:36px;
+    font-size:20px;
+  }
+
+  .prev{left:8px}
+  .next{right:8px}
+
+  .section{
+    padding:40px 4%;
+  }
+
+  .section-title h2{
+    font-size:27px;
+  }
+
+  .games{
+    gap:10px;
+  }
+
+  .game{
+    min-height:135px;
+  }
+
+  .products{
+    gap:10px;
+  }
+
+  .product{
+    padding:15px 8px;
+  }
+
+  .product h3{
+    font-size:15px;
+  }
+
+  .payments{
+    grid-template-columns:1fr;
+  }
+
+  .order-wrap{
+    padding:20px 15px;
+  }
+
+  .trust-box{
+    padding:10px 4px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<header>
+
+  <div class="logo-area">
+    <img src="logo.png" alt="TopUpZone BD Logo">
+
+    <div>
+      <div class="brand">TopUpZone <span>BD</span></div>
+      <div class="tagline">FAST • SAFE • TRUSTED</div>
+    </div>
+  </div>
+
+  <nav>
+    <a href="#home">🏠 Home</a>
+    <a href="#games">🎮 Games</a>
+    <a href="#packages">⚡ Top Up</a>
+    <a href="#order">🛒 Order</a>
+    <a href="#support">🆘 Support</a>
+  </nav>
+
+  <a class="admin" href="admin.html">🛡️ Admin</a>
+
+</header>
+
+
+<!-- BANNER -->
+<section class="hero" id="home">
+
+  <div class="slider">
+
+    <div class="slide active">
+      <img src="banner1.png" alt="TopUpZone Banner 1">
+    </div>
+
+    <div class="slide">
+      <img src="banner2.png" alt="TopUpZone Banner 2">
+    </div>
+
+    <div class="slide">
+      <img src="banner3.png" alt="TopUpZone Banner 3">
+    </div>
+
+    <button class="prev" onclick="changeSlide(-1)">❮</button>
+    <button class="next" onclick="changeSlide(1)">❯</button>
+
+    <div class="dots">
+      <span class="dot active" onclick="goToSlide(0)"></span>
+      <span class="dot" onclick="goToSlide(1)"></span>
+      <span class="dot" onclick="goToSlide(2)"></span>
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- TRUST -->
+<div class="trust">
+
+  <div class="trust-box">
+    <div class="trust-icon">⚡</div>
+    <b>Fast Delivery</b>
+    <small>দ্রুত ডেলিভারি</small>
+  </div>
+
+  <div class="trust-box">
+    <div class="trust-icon">🛡️</div>
+    <b>Safe Payment</b>
+    <small>নিরাপদ লেনদেন</small>
+  </div>
+
+  <div class="trust-box">
+    <div class="trust-icon">💎</div>
+    <b>Best Price</b>
+    <small>সাশ্রয়ী মূল্য</small>
+  </div>
+
+  <div class="trust-box">
+    <div class="trust-icon">🎧</div>
+    <b>Support</b>
+    <small>সাহায্য পাবেন</small>
+  </div>
+
+</div>
+
+
+<!-- GAMES -->
+<section class="section" id="games">
+
+  <div class="section-title">
+    <small>SELECT GAME</small>
+    <h2>🎮 Game নির্বাচন করুন</h2>
+  </div>
+
+  <div class="games">
+
+    <div class="game" onclick="scrollToOrder()">
+      <div class="icon">🔥</div>
+      <h3>Free Fire</h3>
+      <small>Available Now</small>
+      <button>Top Up</button>
+    </div>
+
+    <div class="game coming">
+      <div class="icon">🎯</div>
+      <h3>PUBG Mobile</h3>
+      <small>Coming Soon</small>
+    </div>
+
+    <div class="game coming">
+      <div class="icon">⚔️</div>
+      <h3>Mobile Legends</h3>
+      <small>Coming Soon</small>
+    </div>
+
+    <div class="game coming">
+      <div class="icon">🎮</div>
+      <h3>Other Games</h3>
+      <small>Coming Soon</small>
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- PACKAGES -->
+<section class="section" id="packages">
+
+  <div class="section-title">
+    <small>FREE FIRE</small>
+    <h2>💎 Top Up Packages</h2>
+  </div>
+
+  <div class="tabs">
+
+    <button class="tab active" onclick="filterProducts('all',this)">
+      All
+    </button>
+
+    <button class="tab" onclick="filterProducts('level',this)">
+      🎫 Level Up Pass
+    </button>
+
+    <button class="tab" onclick="filterProducts('membership',this)">
+      🎁 Membership
+    </button>
+
+    <button class="tab" onclick="filterProducts('diamond',this)">
+      💎 Diamonds
+    </button>
+
+  </div>
+
+
+  <div class="products">
+
+    <div class="product" data-type="level">
+      <div class="product-icon">🎫</div>
+      <h3>Level Up-6</h3>
+      <div class="price">৳50</div>
+      <button class="buy" onclick="selectProduct('Level Up-6','50')">
+        Buy Now
+      </button>
+    </div>
+
+    <div class="product" data-type="level">
+      <div class="product-icon">🎫</div>
+      <h3>Level Up-10</h3>
+      <div class="price">৳80</div>
+      <button class="buy" onclick="selectProduct('Level Up-10','80')">
+        Buy Now
+      </button>
+    </div>
+
+    <div class="product" data-type="level">
+      <div class="product-icon">🎫</div>
+      <h3>Level Up-15</h3>
+      <div class="price">৳80</div>
+      <button class="buy" onclick="selectProduct('Level Up-15','80')">
+        Buy Now
+      </button>
+    </div>
+
+    <div class="product" data-type="level">
+      <div class="product-icon">🎫</div>
+      <h3>Level Up-20</h3>
+      <div class="price">৳80</div>
+      <button class="buy" onclick="selectProduct('Level Up-20','80')">
+        Buy Now
+      </button>
+    </div>
+
+    <div class="product" data-type="level">
+      <div class="product-icon">🎫</div>
+      <h3>Level Up-25</h3>
+      <div class="price">৳80</div>
+      <button class="buy" onclick="selectProduct('Level Up-25','80')">
+        Buy Now
+      </button>
+    </div>
+
+    <div class="product" data-type="level">
+      <div class="product-icon">🎫</div>
+      <h3>Level Up-30</h3>
+      <div class="price">৳130</div>
+      <button class="buy" onclick="selectProduct('Level Up-30','130')">
+        Buy Now
+      </button>
+    </div>
+
+
+    <div class="product" data-type="membership">
+      <div class="product-icon">🎁</div>
+      <h3>Weekly Lite</h3>
+      <div class="price">৳50</div>
+      <button class="buy" onclick="selectProduct('Weekly Lite','50')">
+        Buy Now
+      </button>
+    </div>
+
+    <div class="product" data-type="membership">
+      <div class="product-icon">🎁</div>
+      <h3>Weekly Membership</h3>
+      <div class="price">৳170</div>
+      <button class="buy" onclick="selectProduct('Weekly Membership','170')">
+        Buy Now
+      </button>
+    </div>
+
+    <div class="product" data-type="membership">
+      <div class="product-icon">🎁</div>
+      <h3>Monthly Membership</h3>
+      <div class="price">৳800</div>
+      <button class="buy" onclick="selectProduct('Monthly Membership','800')">
+        Buy Now
+      </button>
+    </div>
+
+
+    <div class="product" data-type="diamond">
+      <div class="product-icon">💎</div>
+      <h3>25 Diamonds</h3>
+      <div class="price">৳25</div>
+      <button class="buy" onclick="selectProduct('25 Diamonds','25')">
+        Buy Now
+      </button>
+    </div>
+
+    <div class="product" data-type="diamond">
+      <div class="product-icon">💎</div>
+      <h3>50 Diamonds</h3>
+      <div class="price">৳40</div>
+      <button class="buy" onclick="selectProduct('50 Diamonds','40')">
+        Buy Now
+      </button>
+    </div>
+
+    <div class="product" data-type="diamond">
+      <div class="product-icon">💎</div>
+      <h3>115 Diamonds</h3>
+      <div class="price">৳85</div>
+      <button class="buy" onclick="selectProduct('115 Diamonds','85')">
+        Buy Now
+      </button>
+    </div>
+
+    <div class="product" data-type="diamond">
+      <div class="product-icon">💎</div>
+      <h3>240 Diamonds</h3>
+      <div class="price">৳165</div>
+      <button class="buy" onclick="selectProduct('240 Diamonds','165')">
+        Buy Now
+      </button>
+    </div>
+
+    <div class="product" data-type="diamond">
+      <div class="product-icon">💎</div>
+      <h3>610 Diamonds</h3>
+      <div class="price">৳410</div>
+      <button class="buy" onclick="selectProduct('610 Diamonds','410')">
+        Buy Now
+      </button>
+    </div>
+
+    <div class="product" data-type="diamond">
+      <div class="product-icon">💎</div>
+      <h3>1240 Diamonds</h3>
+      <div class="price">৳800</div>
+      <button class="buy" onclick="selectProduct('1240 Diamonds','800')">
+        Buy Now
+      </button>
+    </div>
+
+    <div class="product" data-type="diamond">
+      <div class="product-icon">💎</div>
+      <h3>2530 Diamonds</h3>
+      <div class="price">৳1600</div>
+      <button class="buy" onclick="selectProduct('2530 Diamonds','1600')">
+        Buy Now
+      </button>
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- ORDER -->
+<section class="section" id="order">
+
+  <div class="section-title">
+    <small>ORDER NOW</small>
+    <h2>🛒 Free Fire Top Up</h2>
+  </div>
+
+  <div class="order-wrap">
+
+    <div class="form-group">
+
+      <label>🆔 Free Fire UID</label>
+
+      <input
+        type="text"
+        id="playerId"
+        inputmode="numeric"
+        placeholder="আপনার Free Fire UID লিখুন"
+      >
+
+    </div>
+
+
+    <div class="form-group">
+
+      <label>📦 Package</label>
+
+      <select id="package">
+
+        <option value="">Package নির্বাচন করুন</option>
+
+        <optgroup label="🎫 Level Up Pass">
+          <option>Level Up-6 — ৳50</option>
+          <option>Level Up-10 — ৳80</option>
+          <option>Level Up-15 — ৳80</option>
+          <option>Level Up-20 — ৳80</option>
+          <option>Level Up-25 — ৳80</option>
+          <option>Level Up-30 — ৳130</option>
+        </optgroup>
+
+        <optgroup label="🎁 Membership">
+          <option>Weekly Lite — ৳50</option>
+          <option>Weekly Membership — ৳170</option>
+          <option>Monthly Membership — ৳800</option>
+        </optgroup>
+
+        <optgroup label="💎 Diamonds">
+          <option>25 Diamonds — ৳25</option>
+          <option>50 Diamonds — ৳40</option>
+          <option>115 Diamonds — ৳85</option>
+          <option>240 Diamonds — ৳165</option>
+          <option>610 Diamonds — ৳410</option>
+          <option>1240 Diamonds — ৳800</option>
+          <option>2530 Diamonds — ৳1600</option>
+        </optgroup>
+
+      </select>
+
+    </div>
+
+
+    <div class="form-group">
+
+      <label>💳 Payment Method</label>
+
+      <div class="payments">
+
+        <div class="pay" onclick="choosePayment(this,'bKash')">
+          🩷 <b>bKash</b>
+          <span>01316897399</span>
+        </div>
+
+        <div class="pay" onclick="choosePayment(this,'Nagad')">
+          🔴 <b>Nagad</b>
+          <span>Contact Support</span>
+        </div>
+
+        <div class="pay" onclick="choosePayment(this,'Upay')">
+          🟡 <b>Upay</b>
+          <span>0316897399</span>
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="form-group">
+
+      <label>🧾 Transaction ID</label>
+
+      <input
+        type="text"
+        id="txn"
+        placeholder="Payment করার পর Txn ID দিন"
+      >
+
+    </div>
+
+
+    <button class="submit" onclick="submitOrder()">
+      🚀 SUBMIT ORDER
+    </button>
+
+  </div>
+
+</section>
+
+
+<!-- SUPPORT -->
+<section class="section" id="support">
+
+  <div class="section-title">
+    <small>NEED HELP?</small>
+    <h2>💬 Customer Support</h2>
+  </div>
+
+  <div class="support">
+
+    <div class="support-card">
+      <div class="big">💬</div>
+      <h3>WhatsApp Support</h3>
+      <p>01410897399</p>
+      <p>01316897399</p>
+
+      <a href="https://wa.me/8801410897399" target="_blank">
+        WhatsApp
+      </a>
+    </div>
+
+
+    <div class="support-card">
+      <div class="big">✈️</div>
+      <h3>Telegram Support</h3>
+      <p>@Ahsanvai10</p>
+
+      <a href="https://t.me/Ahsanvai10" target="_blank">
+        Telegram
+      </a>
+    </div>
+
+
+    <div class="support-card">
+      <div class="big">🛡️</div>
+      <h3>Payment Support</h3>
+      <p>bKash: 01316897399</p>
+      <p>Upay: 0316897399</p>
+      <p>Nagad: WhatsApp/Telegram</p>
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- FOOTER -->
+<footer>
+
+  <p>
+    © 2026 <strong>TopUpZone BD</strong>
+  </p>
+
+  <p style="margin-top:8px">
+    FAST • SAFE • TRUSTED 🎮
+  </p>
+
+</footer>
+
+
+<script>
+
+/* ================= SLIDER ================= */
+
+let currentSlide = 0;
+
+const slides = document.querySelectorAll(".slide");
+const dots = document.querySelectorAll(".dot");
+
+function showSlide(index){
+
+  if(index >= slides.length){
+    index = 0;
+  }
+
+  if(index < 0){
+    index = slides.length - 1;
+  }
+
+  currentSlide = index;
+
+  slides.forEach((slide,i)=>{
+    slide.classList.toggle("active",i === currentSlide);
+  });
+
+  dots.forEach((dot,i)=>{
+    dot.classList.toggle("active",i === currentSlide);
+  });
+}
+
+function changeSlide(direction){
+  showSlide(currentSlide + direction);
+}
+
+function goToSlide(index){
+  showSlide(index);
+}
+
+/* প্রতি 5 সেকেন্ডে banner change */
+setInterval(()=>{
+  changeSlide(1);
+},5000);
+
+
+/* ================= PACKAGE FILTER ================= */
+
+function filterProducts(type,button){
+
+  document.querySelectorAll(".tab").forEach(tab=>{
+    tab.classList.remove("active");
+  });
+
+  button.classList.add("active");
+
+  document.querySelectorAll(".product").forEach(product=>{
+
+    if(type === "all" || product.dataset.type === type){
+      product.style.display = "block";
+    }
+    else{
+      product.style.display = "none";
+    }
+
+  });
+}
+
+
+/* ================= SELECT PRODUCT ================= */
+
+function selectProduct(name,price){
+
+  const packageSelect =
+    document.getElementById("package");
+
+  packageSelect.value =
+    name + " — ৳" + price;
+
+  document
+    .getElementById("order")
+    .scrollIntoView({
+      behavior:"smooth"
+    });
+
+}
+
+
+/* ================= GAME → ORDER ================= */
+
+function scrollToOrder(){
+
+  document
+    .getElementById("order")
+    .scrollIntoView({
+      behavior:"smooth"
+    });
+
+}
+
+
+/* ================= PAYMENT ================= */
+
+let selectedPayment = "";
+
+function choosePayment(element,payment){
+
+  document.querySelectorAll(".pay").forEach(item=>{
+    item.classList.remove("selected");
+  });
+
+  element.classList.add("selected");
+
+  selectedPayment = payment;
+}
+
+
+/* ================= ORDER ================= */
+
+function submitOrder(){
+
+  const uid =
+    document.getElementById("playerId").value.trim();
+
+  const packageName =
+    document.getElementById("package").value;
+
+  const txn =
+    document.getElementById("txn").value.trim();
+
+
+  if(!uid){
+    alert("❌ আপনার Free Fire UID দিন।");
+    return;
+  }
+
+
+  if(!packageName){
+    alert("❌ Package নির্বাচন করুন।");
+    return;
+  }
+
+
+  if(!selectedPayment){
+    alert("❌ Payment Method নির্বাচন করুন।");
+    return;
+  }
+
+
+  if(!txn){
+    alert("❌ Transaction ID দিন।");
+    return;
+  }
+
+
+  const orderId =
+    "TZ" + Date.now().toString().slice(-8);
+
+
+  alert(
+    "✅ Order Submitted!\n\n" +
+    "Order ID: " + orderId + "\n" +
+    "UID: " + uid + "\n" +
+    "Package: " + packageName + "\n" +
+    "Payment: " + selectedPayment + "\n" +
+    "Txn ID: " + txn +
+    "\n\nPayment verify করার পর delivery করা হবে।"
+  );
+
+}
+
+</script>
+
+</body>
+</html>
