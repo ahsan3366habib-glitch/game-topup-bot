@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="bn"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>TopUpZone BD — Admin Panel</title><link rel="stylesheet" href="style.css"></head>
+<body>
+<header class="nav"><a class="brand" href="index.html"><img src="logo.png"><span>TopUpZone <b>BD</b></span></a><nav><a href="index.html">Website</a></nav></header>
+<main class="section">
+<div class="section-head"><small>ADMIN</small><h2>Admin Panel</h2></div>
+<div class="info-card">
+<p>⚠️ এটি এখন frontend/local-storage panel। Real customer orders সব device থেকে এখানে আনতে backend/database connection লাগবে।</p>
+<button class="secondary" onclick="refresh()">Refresh Orders</button>
+<button class="secondary" onclick="clearAll()">Clear Demo Orders</button>
+</div>
+<div id="adminOrders" class="section" style="padding-left:0;padding-right:0"></div>
+</main>
+<script>
+function get(){return JSON.parse(localStorage.getItem("tz_orders")||"[]")}
+function save(x){localStorage.setItem("tz_orders",JSON.stringify(x))}
+function refresh(){const a=document.getElementById("adminOrders"),o=get();a.innerHTML=o.length?o.slice().reverse().map((x,i)=>`<div class="info-card" style="margin-bottom:14px"><h3>#${x.id}</h3><p>UID: <b>${x.uid}</b><br>Package: <b>${x.package}</b><br>Amount: ৳${x.amount}<br>Payment: ${x.payment}<br>Txn: <b>${x.txn}</b><br>Created: ${x.created}<br>Status: <span class="status">${x.status}</span></p><button class="secondary" onclick="setStatus('${x.id}','Payment Verified')">✅ Payment Verified</button> <button class="secondary" onclick="setStatus('${x.id}','Top-Up Done')">🎮 Top-Up Done</button> <button class="secondary" onclick="setStatus('${x.id}','Rejected')">❌ Reject</button></div>`).join(""):"<div class='info-card'>No demo orders yet.</div>"}
+function setStatus(id,s){const o=get();const x=o.find(v=>v.id===id);if(x){x.status=s;save(o);refresh()}}
+function clearAll(){if(confirm("Clear demo orders?")){localStorage.removeItem("tz_orders");refresh()}}
+refresh();
+</script></body></html>

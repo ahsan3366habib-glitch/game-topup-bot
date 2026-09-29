@@ -1,253 +1,102 @@
 <!doctype html>
 <html lang="bn">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>TopUpZone BD — Game Top Up</title>
-<meta name="description" content="Fast and trusted game top-up service in Bangladesh.">
-<link rel="stylesheet" href="style.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TopUpZone BD — Game Top Up</title>
+  <meta name="description" content="TopUpZone BD — Fast manual game top-up service in Bangladesh.">
+  <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
-
 <header class="nav">
-  <div class="brand"><span>🎮</span> TopUpZone <b>BD</b></div>
-  <a href="#orders" class="navbtn">My Orders</a>
+  <a class="brand" href="#home">
+    <img src="logo.png" alt="TopUpZone BD logo">
+    <span>TopUpZone <b>BD</b></span>
+  </a>
+  <nav>
+    <a href="#orders">My Orders</a>
+    <a href="admin.html" class="admin-link">Admin</a>
+    <a href="#login" class="login-btn">Login</a>
+  </nav>
 </header>
 
-<main>
-
-<section class="hero">
-  <div>
-    <span class="pill">⚡ Fast Manual Delivery</span>
-
-    <h1>
-      Game Top-Up<br>
-      <span>সহজে, দ্রুত, নিরাপদে</span>
-    </h1>
-
-    <p>
-      Free Fire package বেছে নিন, Player ID দিন এবং
-      bKash / Upay / Nagad দিয়ে payment করুন।
-    </p>
-
-    <a class="primary" href="#games">🎮 Top Up Now</a>
-  </div>
-
-  <div class="hero-card">
-    <div class="orb">🎮</div>
-    <h3>TopUpZone BD</h3>
-    <p>Bangladesh Game Top-Up</p>
-
-    <div class="trust">
-      ✓ Manual payment verification<br>
-      ✓ Order tracking<br>
-      ✓ Customer support
+<main id="home">
+  <section class="hero">
+    <div class="hero-copy">
+      <span class="pill">⚡ Fast Manual Delivery</span>
+      <h1>Game Top-Up<br><span>সহজে, দ্রুত, নিরাপদে</span></h1>
+      <p>Free Fire package বেছে নিন, আপনার <b>UID</b> দিন এবং bKash / Upay / Nagad দিয়ে payment করুন।</p>
+      <a class="primary" href="#games">🎮 Top Up Now</a>
     </div>
-  </div>
-</section>
-
-
-<section id="games" class="section">
-
-  <div class="section-head">
-    <div>
-      <small>SELECT GAME</small>
-      <h2>Choose Your Game</h2>
+    <div class="hero-art">
+      <img src="logo.png" alt="Game TopUp">
     </div>
-  </div>
+  </section>
 
-  <div class="game-grid">
-
-    <button class="game active"
-      onclick="showGame('freefire',this)">
-      <span>🔥</span>
-      <strong>Free Fire</strong>
-      <small>Diamonds & Pass</small>
-    </button>
-
-    <button class="game disabled">
-      <span>🎯</span>
-      <strong>PUBG Mobile</strong>
-      <small>Coming soon</small>
-    </button>
-
-    <button class="game disabled">
-      <span>⚔️</span>
-      <strong>Mobile Legends</strong>
-      <small>Coming soon</small>
-    </button>
-
-  </div>
-
-</section>
-
-
-<section id="freefire" class="section">
-
-  <div class="section-head">
-    <div>
-      <small>FREE FIRE</small>
-      <h2>Select Package</h2>
+  <section class="banner-strip" aria-label="Promotional banners">
+    <div class="banner-track">
+      <div class="promo">🔥 FREE FIRE TOP-UP • FAST MANUAL DELIVERY</div>
+      <div class="promo">💎 DIAMONDS • 🎫 LEVEL UP PASS • 🎁 MEMBERSHIP</div>
+      <div class="promo">⚡ ORDER NOW • SUPPORT AVAILABLE</div>
+      <div class="promo">🔥 FREE FIRE TOP-UP • FAST MANUAL DELIVERY</div>
+      <div class="promo">💎 DIAMONDS • 🎫 LEVEL UP PASS • 🎁 MEMBERSHIP</div>
     </div>
-  </div>
+  </section>
 
-  <div class="tabs">
-
-    <button class="tab active"
-      onclick="filterPack('all',this)">
-      All
-    </button>
-
-    <button class="tab"
-      onclick="filterPack('pass',this)">
-      🎫 Level Up Pass
-    </button>
-
-    <button class="tab"
-      onclick="filterPack('membership',this)">
-      🎁 Membership
-    </button>
-
-    <button class="tab"
-      onclick="filterPack('diamond',this)">
-      💎 Diamonds
-    </button>
-
-  </div>
-
-  <div id="packages" class="packages"></div>
-
-</section>
-
-
-<section id="order" class="section order-section">
-
-  <div class="section-head">
-    <div>
-      <small>ORDER</small>
-      <h2>Place Your Order</h2>
+  <section id="games" class="section">
+    <div class="section-head">
+      <div><small>SELECT GAME</small><h2>Choose Your Game</h2></div>
     </div>
-  </div>
+    <div class="game-grid">
+      <button class="game-card active" onclick="selectGame('freefire')"><span>🔥</span><b>Free Fire</b><small>Diamonds & Pass</small></button>
+      <button class="game-card disabled"><span>🎯</span><b>PUBG Mobile</b><small>Coming soon</small></button>
+      <button class="game-card disabled"><span>⚔️</span><b>Mobile Legends</b><small>Coming soon</small></button>
+    </div>
+  </section>
 
-  <div class="order-box">
+  <section class="section">
+    <div class="category-tabs">
+      <button class="tab active" data-cat="all" onclick="filterPackages('all')">All</button>
+      <button class="tab" data-cat="level" onclick="filterPackages('level')">🎫 Level Up Pass</button>
+      <button class="tab" data-cat="member" onclick="filterPackages('member')">🎁 Membership</button>
+      <button class="tab" data-cat="diamond" onclick="filterPackages('diamond')">💎 Diamonds</button>
+    </div>
+    <div id="packageGrid" class="package-grid"></div>
+  </section>
 
-    <form id="orderForm">
-
-      <label>
-        Player ID
-        <input
-          id="playerId"
-          required
-          placeholder="Enter your Free Fire Player ID">
+  <section id="order" class="section">
+    <div class="section-head"><div><small>ORDER</small><h2>Place Your Order</h2></div></div>
+    <form id="orderForm" class="order-card">
+      <label>Free Fire UID
+        <input id="uid" inputmode="numeric" pattern="[0-9]{5,15}" placeholder="Enter your Free Fire UID" required>
       </label>
-
-
-      <label>
-        Package
-
-        <select id="package" required>
-        </select>
+      <label>Package
+        <select id="package" required><option value="">Select a package</option></select>
       </label>
-
-
-      <label>
-        Payment Method
-
+      <label>Payment Method
         <select id="payment" required>
-
-          <option value="">
-            Select payment method
-          </option>
-
-          <option>
-            bKash — 01316897399
-          </option>
-
-          <option>
-            Upay — 0316897399
-          </option>
-
-          <option>
-            Nagad — Contact/support
-          </option>
-
+          <option value="">Select payment method</option>
+          <option>bKash — 01316897399</option>
+          <option>Upay — 0316897399</option>
+          <option>Nagad — Contact/support</option>
         </select>
       </label>
-
-
-      <label>
-        Transaction ID
-
-        <input
-          id="txn"
-          required
-          placeholder="Enter payment Txn ID">
+      <label>Transaction ID
+        <input id="txn" placeholder="Enter payment Txn ID" required>
       </label>
-
-
-      <button
-        class="primary full"
-        type="submit">
-        Submit Order
-      </button>
-
+      <button class="primary full" type="submit">Submit Order</button>
+      <p class="form-note">Payment verify হওয়ার পর admin manual top-up করবেন।</p>
     </form>
+  </section>
 
-
-    <div
-      id="result"
-      class="result hidden">
-    </div>
-
-  </div>
-
-</section>
-
-
-<section id="orders" class="section info">
-
-  <div class="info-card">
-    <span>🧾</span>
-
-    <h3>Order Tracking</h3>
-
-    <p>
-      আপনার Order ID সংরক্ষণ করুন।
-      Manual verification-এর পর order status জানানো হবে।
-    </p>
-
-  </div>
-
-
-  <div class="info-card">
-
-    <span>💬</span>
-
-    <h3>Support</h3>
-
-    <p>
-      Support:
-      <a
-        href="https://t.me/Ahsanvai10"
-        target="_blank">
-        @Ahsanvai10
-      </a>
-    </p>
-
-  </div>
-
-</section>
-
+  <section id="orders" class="section info-grid">
+    <div class="info-card"><span>🧾</span><h3>Order Tracking</h3><p>আপনার Order ID সংরক্ষণ করুন। Manual verification-এর পর order status আপডেট হবে।</p><div id="orderList"></div></div>
+    <div class="info-card" id="login"><span>🔐</span><h3>Login</h3><p>Login/Register option রাখা হয়েছে। পরে backend authentication যুক্ত করা যাবে।</p><button class="secondary" onclick="alert('Login system backend connection-এর পর চালু হবে।')">Login / Register</button></div>
+    <div class="info-card"><span>💬</span><h3>Support</h3><p>WhatsApp support:</p><a class="wa" href="https://wa.me/8801410897399" target="_blank">WhatsApp — 01410897399</a><a class="wa" href="https://wa.me/8801316897399" target="_blank">WhatsApp — 01316897399</a><a class="tg" href="https://t.me/Ahsanvai10" target="_blank">Telegram — @Ahsanvai10</a></div>
+  </section>
 </main>
 
-
-<footer>
-  © 2026 TopUpZone BD · All rights reserved.
-</footer>
-
-
+<footer>© 2026 TopUpZone BD · All rights reserved.</footer>
 <script src="script.js"></script>
-
 </body>
 </html>
