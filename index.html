@@ -1,102 +1,52 @@
 <!doctype html>
 <html lang="bn">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>TopUpZone BD — Game Top Up</title>
-  <meta name="description" content="TopUpZone BD — Fast manual game top-up service in Bangladesh.">
-  <link rel="stylesheet" href="style.css">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TopUpZone BD — Free Fire Top Up</title>
+<meta name="description" content="TopUpZone BD — Fast, safe manual Free Fire top up in Bangladesh.">
+<link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
 <header class="nav">
-  <a class="brand" href="#home">
-    <img src="logo.png" alt="TopUpZone BD logo">
-    <span>TopUpZone <b>BD</b></span>
-  </a>
+  <a class="brand" href="#home"><img src="/static/logo.png"><span>TopUpZone <b>BD</b><small>FAST • SAFE • TRUSTED</small></span></a>
+  <button class="menu" onclick="document.body.classList.toggle('nav-open')">☰</button>
   <nav>
-    <a href="#orders">My Orders</a>
-    <a href="admin.html" class="admin-link">Admin</a>
-    <a href="#login" class="login-btn">Login</a>
+    <a href="#home">Home</a><a href="#games">Games</a><a href="#topup">⚡ Top Up</a><a href="#orders">My Orders</a>
+    <a href="#login" id="loginLink">Login</a><a href="#signup" id="signupLink">Sign Up</a><a href="/admin/login" class="admin-btn">👑 Admin Panel</a>
   </nav>
 </header>
-
 <main id="home">
-  <section class="hero">
-    <div class="hero-copy">
-      <span class="pill">⚡ Fast Manual Delivery</span>
-      <h1>Game Top-Up<br><span>সহজে, দ্রুত, নিরাপদে</span></h1>
-      <p>Free Fire package বেছে নিন, আপনার <b>UID</b> দিন এবং bKash / Upay / Nagad দিয়ে payment করুন।</p>
-      <a class="primary" href="#games">🎮 Top Up Now</a>
-    </div>
-    <div class="hero-art">
-      <img src="logo.png" alt="Game TopUp">
-    </div>
-  </section>
-
-  <section class="banner-strip" aria-label="Promotional banners">
-    <div class="banner-track">
-      <div class="promo">🔥 FREE FIRE TOP-UP • FAST MANUAL DELIVERY</div>
-      <div class="promo">💎 DIAMONDS • 🎫 LEVEL UP PASS • 🎁 MEMBERSHIP</div>
-      <div class="promo">⚡ ORDER NOW • SUPPORT AVAILABLE</div>
-      <div class="promo">🔥 FREE FIRE TOP-UP • FAST MANUAL DELIVERY</div>
-      <div class="promo">💎 DIAMONDS • 🎫 LEVEL UP PASS • 🎁 MEMBERSHIP</div>
-    </div>
-  </section>
-
-  <section id="games" class="section">
-    <div class="section-head">
-      <div><small>SELECT GAME</small><h2>Choose Your Game</h2></div>
-    </div>
-    <div class="game-grid">
-      <button class="game-card active" onclick="selectGame('freefire')"><span>🔥</span><b>Free Fire</b><small>Diamonds & Pass</small></button>
-      <button class="game-card disabled"><span>🎯</span><b>PUBG Mobile</b><small>Coming soon</small></button>
-      <button class="game-card disabled"><span>⚔️</span><b>Mobile Legends</b><small>Coming soon</small></button>
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="category-tabs">
-      <button class="tab active" data-cat="all" onclick="filterPackages('all')">All</button>
-      <button class="tab" data-cat="level" onclick="filterPackages('level')">🎫 Level Up Pass</button>
-      <button class="tab" data-cat="member" onclick="filterPackages('member')">🎁 Membership</button>
-      <button class="tab" data-cat="diamond" onclick="filterPackages('diamond')">💎 Diamonds</button>
-    </div>
-    <div id="packageGrid" class="package-grid"></div>
-  </section>
-
-  <section id="order" class="section">
-    <div class="section-head"><div><small>ORDER</small><h2>Place Your Order</h2></div></div>
-    <form id="orderForm" class="order-card">
-      <label>Free Fire UID
-        <input id="uid" inputmode="numeric" pattern="[0-9]{5,15}" placeholder="Enter your Free Fire UID" required>
-      </label>
-      <label>Package
-        <select id="package" required><option value="">Select a package</option></select>
-      </label>
-      <label>Payment Method
-        <select id="payment" required>
-          <option value="">Select payment method</option>
-          <option>bKash — 01316897399</option>
-          <option>Upay — 0316897399</option>
-          <option>Nagad — Contact/support</option>
-        </select>
-      </label>
-      <label>Transaction ID
-        <input id="txn" placeholder="Enter payment Txn ID" required>
-      </label>
-      <button class="primary full" type="submit">Submit Order</button>
-      <p class="form-note">Payment verify হওয়ার পর admin manual top-up করবেন।</p>
-    </form>
-  </section>
-
-  <section id="orders" class="section info-grid">
-    <div class="info-card"><span>🧾</span><h3>Order Tracking</h3><p>আপনার Order ID সংরক্ষণ করুন। Manual verification-এর পর order status আপডেট হবে।</p><div id="orderList"></div></div>
-    <div class="info-card" id="login"><span>🔐</span><h3>Login</h3><p>Login/Register option রাখা হয়েছে। পরে backend authentication যুক্ত করা যাবে।</p><button class="secondary" onclick="alert('Login system backend connection-এর পর চালু হবে।')">Login / Register</button></div>
-    <div class="info-card"><span>💬</span><h3>Support</h3><p>WhatsApp support:</p><a class="wa" href="https://wa.me/8801410897399" target="_blank">WhatsApp — 01410897399</a><a class="wa" href="https://wa.me/8801316897399" target="_blank">WhatsApp — 01316897399</a><a class="tg" href="https://t.me/Ahsanvai10" target="_blank">Telegram — @Ahsanvai10</a></div>
-  </section>
+<section class="hero-slider">
+  <div class="slides">
+    <img class="slide active" src="/static/banners/banner1.jpg" alt="TopUpZone BD Free Fire banner">
+    <img class="slide" src="/static/banners/banner2.jpg" alt="TopUpZone BD Free Fire diamonds banner">
+    <img class="slide" src="/static/banners/banner3.jpg" alt="TopUpZone BD Free Fire top up banner">
+  </div>
+  <button class="prev" onclick="moveSlide(-1)">‹</button><button class="next" onclick="moveSlide(1)">›</button>
+  <div class="dots"><span class="dot active" onclick="goSlide(0)"></span><span class="dot" onclick="goSlide(1)"></span><span class="dot" onclick="goSlide(2)"></span></div>
+</section>
+<section class="trust"><div>⚡ <b>Instant Delivery</b><small>দ্রুত টপ-আপ</small></div><div>🛡️ <b>100% Safe</b><small>নিরাপদ লেনদেন</small></div><div>🏷️ <b>Best Price</b><small>সর্বনিম্ন দাম</small></div><div>🎧 <b>24/7 Support</b><small>সবসময় পাশে আছি</small></div><div>💚 <b>WhatsApp</b><small>01410897399 / 01316897399</small></div><div>✈️ <b>Telegram</b><small>@Ahsanvai10</small></div></section>
+<section id="games" class="section"><div class="heading"><small>SELECT GAME</small><h2>Choose Your Game</h2></div><div class="games"><button class="game active">🔥 <b>Free Fire</b><small>Diamonds & Pass</small></button><button class="game disabled">🎯 <b>PUBG Mobile</b><small>Coming Soon</small></button><button class="game disabled">⚔️ <b>Mobile Legends</b><small>Coming Soon</small></button></div></section>
+<section id="topup" class="section"><div class="heading"><small>FREE FIRE</small><h2>Top Up Packages</h2></div><div class="tabs"><button class="tab active" onclick="filterPackages('all',this)">All</button><button class="tab" onclick="filterPackages('level',this)">🎫 Level Up Pass</button><button class="tab" onclick="filterPackages('member',this)">🎁 Membership</button><button class="tab" onclick="filterPackages('diamond',this)">💎 Diamonds</button></div><div id="packageGrid" class="packages"></div></section>
+<section id="order" class="section order-section"><div class="heading"><small>ORDER</small><h2>Place Your Order</h2></div><div class="order-layout"><form id="orderForm" class="card"><label>Free Fire UID<input id="uid" inputmode="numeric" pattern="[0-9]{5,20}" placeholder="আপনার Free Fire UID" required></label><label>Package<select id="package" required><option value="">Select package</option></select></label><div class="payment-box"><h3>Payment করতে Send Money করুন</h3><div class="pay-row"><b>bKash</b><strong>01316897399</strong></div><div class="pay-row"><b>Nagad</b><strong>01410897399</strong></div><div class="pay-row"><b>Upay</b><strong>01316897399</strong></div></div><label>Payment Method<select id="payment" required><option value="">Select payment method</option><option>bKash</option><option>Nagad</option><option>Upay</option></select></label><label>Transaction ID<input id="txn" placeholder="Payment-এর Txn ID" required></label><button class="primary" type="submit">🚀 Submit Order</button><p class="muted">Payment করার পর সঠিক Txn ID দিন। Admin payment verify করে manual top-up করবে।</p><div id="orderResult"></div></form><div class="card side-info"><h3>🛡️ Order নিরাপত্তা</h3><p>শুধু আপনার <b>UID</b> লাগবে। কোনো password/OTP কখনো দেবেন না।</p><h3>💬 Support</h3><p>WhatsApp: <b>01410897399</b><br>WhatsApp: <b>01316897399</b><br>Telegram: <b>@Ahsanvai10</b></p><a class="secondary" href="https://wa.me/8801410897399" target="_blank">WhatsApp Support</a></div></div></section>
+<section id="orders" class="section"><div class="heading"><small>ACCOUNT</small><h2>My Orders</h2></div><div id="ordersBox" class="card"><p class="muted">Login করলে আপনার orders এখানে দেখা যাবে।</p></div></section>
+<section id="login" class="auth section"><div class="auth-card"><div class="heading"><small>ACCOUNT</small><h2>Login</h2></div><form id="loginForm"><input id="loginEmail" type="email" placeholder="Email" required><input id="loginPassword" type="password" placeholder="Password" required><button class="primary">Login</button></form><p>Account নেই? <a href="#signup">Sign Up</a></p><div id="loginMsg"></div></div></section>
+<section id="signup" class="auth section"><div class="auth-card"><div class="heading"><small>NEW ACCOUNT</small><h2>Sign Up</h2></div><form id="signupForm"><input id="signupName" placeholder="Name" required><input id="signupEmail" type="email" placeholder="Email" required><input id="signupPassword" type="password" minlength="6" placeholder="Password (minimum 6)" required><button class="primary">Create Account</button></form><div id="signupMsg"></div></div></section>
 </main>
-
-<footer>© 2026 TopUpZone BD · All rights reserved.</footer>
-<script src="script.js"></script>
-</body>
-</html>
+<footer><div><b>TopUpZone BD</b><span>Fast • Safe • Trusted</span></div><div>Support: @Ahsanvai10</div><div>© 2026 TopUpZone BD. All rights reserved.</div></footer>
+<script>
+const packages=[
+['lu6','🎫 Level Up-6',50,'level'],['lu10','🎫 Level Up-10',80,'level'],['lu15','🎫 Level Up-15',80,'level'],['lu20','🎫 Level Up-20',80,'level'],['lu25','🎫 Level Up-25',80,'level'],['lu30','🎫 Level Up-30',130,'level'],['wlite','🎁 Weekly Lite',50,'member'],['weekly','🎁 Weekly Membership',170,'member'],['monthly','🎁 Monthly Membership',800,'member'],['d25','💎 25 Diamonds',25,'diamond'],['d50','💎 50 Diamonds',40,'diamond'],['d115','💎 115 Diamonds',85,'diamond'],['d240','💎 240 Diamonds',165,'diamond'],['d610','💎 610 Diamonds',410,'diamond'],['d1240','💎 1240 Diamonds',800,'diamond'],['d2530','💎 2530 Diamonds',1600,'diamond']];
+let selected=packages[9][0];
+function renderPackages(cat='all'){const g=document.getElementById('packageGrid');g.innerHTML=packages.filter(p=>cat==='all'||p[3]===cat).map(p=>`<button class="package ${p[0]===selected?'selected':''}" onclick="selectPackage('${p[0]}')"><span>${p[1]}</span><b>৳${p[2]}</b><small>Buy Now →</small></button>`).join('')}
+function selectPackage(k){selected=k;const p=packages.find(x=>x[0]===k);document.getElementById('package').value=p[0];renderPackages(currentCat)}
+let currentCat='all';function filterPackages(cat,el){currentCat=cat;document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));el.classList.add('active');renderPackages(cat)}
+const sel=document.getElementById('package');sel.innerHTML+='<option disabled>────────</option>'+packages.map(p=>`<option value="${p[0]}">${p[1]} — ৳${p[2]}</option>`).join('');renderPackages();
+let slide=0;function goSlide(i){slide=i;document.querySelectorAll('.slide').forEach((x,j)=>x.classList.toggle('active',j===slide));document.querySelectorAll('.dot').forEach((x,j)=>x.classList.toggle('active',j===slide))}function moveSlide(d){goSlide((slide+d+3)%3)}setInterval(()=>moveSlide(1),5000);
+async function post(url,data,msgEl){const r=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});let j={};try{j=await r.json()}catch{}if(!r.ok)throw new Error(j.error||'Request failed');return j}
+async function refreshOrders(){const box=document.getElementById('ordersBox');try{const r=await fetch('/api/my-orders');const j=await r.json();if(!j.authenticated){box.innerHTML='<p class="muted">My Orders দেখতে Login করুন।</p>';return}box.innerHTML=j.orders.length?j.orders.map(o=>`<div class="order-item"><b>#${o.id}</b> ${o.package_name}<span>UID: ${o.player_id}</span><strong>৳${o.amount}</strong><em>${o.status_label}</em></div>`).join(''):'<p class="muted">এখনও কোনো order নেই।' ;document.getElementById('loginLink').textContent='Logout'}catch{}}
+document.getElementById('orderForm').addEventListener('submit',async e=>{e.preventDefault();const p=packages.find(x=>x[0]===document.getElementById('package').value);if(!p){alert('Package select করুন');return}const box=document.getElementById('orderResult');box.textContent='Submitting...';try{const j=await post('/api/orders',{player_id:document.getElementById('uid').value.trim(),package_name:p[1],payment_method:document.getElementById('payment').value,transaction_id:document.getElementById('txn').value.trim()},box);box.innerHTML=`<div class="success">✅ Order #${j.order_id} submitted! Admin payment verify করবে।</div>`;document.getElementById('orderForm').reset();refreshOrders()}catch(err){box.innerHTML=`<div class="error">❌ ${err.message}</div>`}});
+document.getElementById('loginForm').addEventListener('submit',async e=>{e.preventDefault();try{await post('/api/login',{email:loginEmail.value,password:loginPassword.value});loginMsg.innerHTML='<div class="success">✅ Login successful.</div>';refreshOrders()}catch(err){loginMsg.innerHTML='<div class="error">❌ '+err.message+'</div>'}});
+document.getElementById('signupForm').addEventListener('submit',async e=>{e.preventDefault();try{await post('/api/register',{name:signupName.value,email:signupEmail.value,password:signupPassword.value});signupMsg.innerHTML='<div class="success">✅ Account created. এখন Login করুন।</div>';e.target.reset()}catch(err){signupMsg.innerHTML='<div class="error">❌ '+err.message+'</div>'}});
+refreshOrders();
+</script></body></html>
