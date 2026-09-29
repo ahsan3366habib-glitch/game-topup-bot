@@ -1,253 +1,557 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="bn">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>TopUpZone BD — Game Top Up</title>
-<meta name="description" content="Fast and trusted game top-up service in Bangladesh.">
-<link rel="stylesheet" href="style.css">
-</head>
-
-<body>
-
-<header class="nav">
-  <div class="brand"><span>🎮</span> TopUpZone <b>BD</b></div>
-  <a href="#orders" class="navbtn">My Orders</a>
-</header>
-
-<main>
-
-<section class="hero">
-  <div>
-    <span class="pill">⚡ Fast Manual Delivery</span>
-
-    <h1>
-      Game Top-Up<br>
-      <span>সহজে, দ্রুত, নিরাপদে</span>
-    </h1>
-
-    <p>
-      Free Fire package বেছে নিন, Player ID দিন এবং
-      bKash / Upay / Nagad দিয়ে payment করুন।
-    </p>
-
-    <a class="primary" href="#games">🎮 Top Up Now</a>
-  </div>
-
-  <div class="hero-card">
-    <div class="orb">🎮</div>
-    <h3>TopUpZone BD</h3>
-    <p>Bangladesh Game Top-Up</p>
-
-    <div class="trust">
-      ✓ Manual payment verification<br>
-      ✓ Order tracking<br>
-      ✓ Customer support
-    </div>
-  </div>
-</section>
-
-
-<section id="games" class="section">
-
-  <div class="section-head">
-    <div>
-      <small>SELECT GAME</small>
-      <h2>Choose Your Game</h2>
-    </div>
-  </div>
-
-  <div class="game-grid">
-
-    <button class="game active"
-      onclick="showGame('freefire',this)">
-      <span>🔥</span>
-      <strong>Free Fire</strong>
-      <small>Diamonds & Pass</small>
-    </button>
-
-    <button class="game disabled">
-      <span>🎯</span>
-      <strong>PUBG Mobile</strong>
-      <small>Coming soon</small>
-    </button>
-
-    <button class="game disabled">
-      <span>⚔️</span>
-      <strong>Mobile Legends</strong>
-      <small>Coming soon</small>
-    </button>
-
-  </div>
-
-</section>
-
-
-<section id="freefire" class="section">
-
-  <div class="section-head">
-    <div>
-      <small>FREE FIRE</small>
-      <h2>Select Package</h2>
-    </div>
-  </div>
-
-  <div class="tabs">
-
-    <button class="tab active"
-      onclick="filterPack('all',this)">
-      All
-    </button>
-
-    <button class="tab"
-      onclick="filterPack('pass',this)">
-      🎫 Level Up Pass
-    </button>
-
-    <button class="tab"
-      onclick="filterPack('membership',this)">
-      🎁 Membership
-    </button>
-
-    <button class="tab"
-      onclick="filterPack('diamond',this)">
-      💎 Diamonds
-    </button>
-
-  </div>
-
-  <div id="packages" class="packages"></div>
-
-</section>
-
-
-<section id="order" class="section order-section">
-
-  <div class="section-head">
-    <div>
-      <small>ORDER</small>
-      <h2>Place Your Order</h2>
-    </div>
-  </div>
-
-  <div class="order-box">
-
-    <form id="orderForm">
-
-      <label>
-        Player ID
-        <input
-          id="playerId"
-          required
-          placeholder="Enter your Free Fire Player ID">
-      </label>
-
-
-      <label>
-        Package
-
-        <select id="package" required>
-        </select>
-      </label>
-
-
-      <label>
-        Payment Method
-
-        <select id="payment" required>
-
-          <option value="">
-            Select payment method
-          </option>
-
-          <option>
-            bKash — 01316897399
-          </option>
-
-          <option>
-            Upay — 0316897399
-          </option>
-
-          <option>
-            Nagad — Contact/support
-          </option>
-
-        </select>
-      </label>
-
-
-      <label>
-        Transaction ID
-
-        <input
-          id="txn"
-          required
-          placeholder="Enter payment Txn ID">
-      </label>
-
-
-      <button
-        class="primary full"
-        type="submit">
-        Submit Order
-      </button>
-
-    </form>
-
-
-    <div
-      id="result"
-      class="result hidden">
-    </div>
-
-  </div>
-
-</section>
-
-
-<section id="orders" class="section info">
-
-  <div class="info-card">
-    <span>🧾</span>
-
-    <h3>Order Tracking</h3>
-
-    <p>
-      আপনার Order ID সংরক্ষণ করুন।
-      Manual verification-এর পর order status জানানো হবে।
-    </p>
-
-  </div>
-
-
-  <div class="info-card">
-
-    <span>💬</span>
-
-    <h3>Support</h3>
-
-    <p>
-      Support:
-      <a
-        href="https://t.me/Ahsanvai10"
-        target="_blank">
-        @Ahsanvai10
-      </a>
-    </p>
-
-  </div>
-
-</section>
-
-</main>
-
-
-<footer>
-  © 2026 TopUpZone BD · All rights reserved.
-</footer>
-
-
-<script src="script.js"></script>
-
-</body>
-</html>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>TopUpZone BD | Game Top Up</title>
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:Arial,Helvetica,sans-serif;
+}
+
+body{
+  background:#020611;
+  color:#fff;
+  overflow-x:hidden;
+}
+
+a{
+  text-decoration:none;
+  color:inherit;
+}
+
+button{
+  font-family:inherit;
+}
+
+/* HEADER */
+header{
+  position:sticky;
+  top:0;
+  z-index:1000;
+  height:76px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:8px 4%;
+  background:rgba(2,6,17,.94);
+  border-bottom:1px solid #168cff;
+  backdrop-filter:blur(15px);
+  box-shadow:0 0 25px rgba(0,136,255,.25);
+}
+
+.logo-area{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.logo-area img{
+  width:58px;
+  height:58px;
+  object-fit:contain;
+  border-radius:50%;
+}
+
+.brand{
+  font-size:25px;
+  font-weight:900;
+  letter-spacing:.5px;
+}
+
+.brand span{
+  color:#00c8ff;
+}
+
+.tagline{
+  font-size:9px;
+  letter-spacing:4px;
+  color:#80dfff;
+  margin-top:2px;
+}
+
+nav{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+nav a{
+  padding:12px 17px;
+  border-radius:9px;
+  font-weight:bold;
+  font-size:14px;
+  transition:.3s;
+}
+
+nav a:hover,
+nav a.active{
+  background:linear-gradient(135deg,#0077ff,#00d9ff);
+  box-shadow:0 0 18px #008cff;
+}
+
+.admin{
+  background:linear-gradient(135deg,#0066ff,#00bfff);
+  box-shadow:0 0 15px rgba(0,170,255,.5);
+}
+
+/* MOBILE MENU */
+.menu-btn{
+  display:none;
+  font-size:28px;
+  cursor:pointer;
+}
+
+/* HERO */
+.hero{
+  position:relative;
+  width:100%;
+  min-height:430px;
+  overflow:hidden;
+  background:
+    radial-gradient(circle at 20% 40%,rgba(0,180,255,.35),transparent 35%),
+    radial-gradient(circle at 80% 60%,rgba(50,0,255,.3),transparent 35%),
+    linear-gradient(135deg,#030b22,#001b3b,#050018);
+}
+
+.hero::before{
+  content:"";
+  position:absolute;
+  width:500px;
+  height:500px;
+  border-radius:50%;
+  border:1px solid rgba(0,200,255,.2);
+  left:-180px;
+  top:-100px;
+  animation:spin 12s linear infinite;
+}
+
+.hero::after{
+  content:"";
+  position:absolute;
+  width:350px;
+  height:350px;
+  border-radius:50%;
+  border:1px solid rgba(0,100,255,.2);
+  right:-100px;
+  bottom:-100px;
+  animation:spin 9s linear infinite reverse;
+}
+
+@keyframes spin{
+  to{transform:rotate(360deg)}
+}
+
+.slide{
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:45px 7%;
+  opacity:0;
+  transform:scale(1.04);
+  transition:opacity .8s,transform 1s;
+  pointer-events:none;
+}
+
+.slide.active{
+  opacity:1;
+  transform:scale(1);
+  pointer-events:auto;
+}
+
+.slide-text{
+  width:53%;
+  position:relative;
+  z-index:2;
+}
+
+.badge{
+  display:inline-block;
+  padding:8px 15px;
+  border:1px solid #00d9ff;
+  border-radius:30px;
+  color:#00e1ff;
+  background:rgba(0,200,255,.08);
+  box-shadow:0 0 15px rgba(0,200,255,.3);
+  font-weight:bold;
+  margin-bottom:18px;
+}
+
+.slide h1{
+  font-size:55px;
+  line-height:1.05;
+  margin-bottom:15px;
+}
+
+.slide h1 span{
+  color:#00d9ff;
+  text-shadow:0 0 25px #008cff;
+}
+
+.slide p{
+  font-size:18px;
+  color:#d5eaff;
+  line-height:1.7;
+  margin-bottom:25px;
+}
+
+.hero-btn{
+  display:inline-block;
+  padding:14px 30px;
+  border-radius:30px;
+  background:linear-gradient(90deg,#006cff,#00d9ff);
+  font-weight:900;
+  box-shadow:0 0 25px rgba(0,180,255,.55);
+  transition:.3s;
+}
+
+.hero-btn:hover{
+  transform:translateY(-3px) scale(1.03);
+}
+
+.character{
+  width:42%;
+  height:310px;
+  border-radius:30px;
+  background:
+    radial-gradient(circle,#00cfff55,transparent 45%),
+    linear-gradient(145deg,#071c42,#020611);
+  border:1px solid #00aaff;
+  box-shadow:0 0 45px rgba(0,160,255,.35);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:120px;
+  animation:float 3s ease-in-out infinite;
+}
+
+@keyframes float{
+  50%{transform:translateY(-12px)}
+}
+
+.arrows{
+  position:absolute;
+  z-index:10;
+  width:100%;
+  top:50%;
+  display:flex;
+  justify-content:space-between;
+  padding:0 18px;
+  transform:translateY(-50%);
+}
+
+.arrow{
+  width:45px;
+  height:45px;
+  border-radius:50%;
+  border:1px solid #00bfff;
+  background:#00142ccc;
+  color:white;
+  font-size:25px;
+  cursor:pointer;
+}
+
+.dots{
+  position:absolute;
+  bottom:18px;
+  left:50%;
+  transform:translateX(-50%);
+  display:flex;
+  gap:8px;
+  z-index:20;
+}
+
+.dot{
+  width:10px;
+  height:10px;
+  border-radius:50%;
+  background:#718094;
+  cursor:pointer;
+}
+
+.dot.active{
+  width:28px;
+  border-radius:10px;
+  background:#00d9ff;
+  box-shadow:0 0 12px #00d9ff;
+}
+
+/* TRUST BAR */
+.trust{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:12px;
+  padding:18px 5%;
+  background:#030b19;
+  border-top:1px solid #073a66;
+  border-bottom:1px solid #073a66;
+}
+
+.trust-box{
+  text-align:center;
+  padding:12px;
+  border-radius:12px;
+  background:linear-gradient(145deg,#07172c,#030914);
+  border:1px solid #0a4775;
+}
+
+.trust-icon{
+  font-size:28px;
+}
+
+.trust-box b{
+  display:block;
+  margin-top:5px;
+}
+
+.trust-box small{
+  color:#9db7d3;
+}
+
+/* SECTION */
+.section{
+  padding:55px 5%;
+  max-width:1400px;
+  margin:auto;
+}
+
+.section-title{
+  text-align:center;
+  margin-bottom:35px;
+}
+
+.section-title small{
+  color:#00d9ff;
+  letter-spacing:3px;
+}
+
+.section-title h2{
+  font-size:34px;
+  margin-top:7px;
+}
+
+/* GAMES */
+.games{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:18px;
+}
+
+.game{
+  min-height:150px;
+  border:1px solid #07518a;
+  border-radius:17px;
+  background:linear-gradient(145deg,#071a34,#030914);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  cursor:pointer;
+  transition:.35s;
+  position:relative;
+  overflow:hidden;
+}
+
+.game::before{
+  content:"";
+  position:absolute;
+  width:100%;
+  height:2px;
+  top:0;
+  background:linear-gradient(90deg,transparent,#00d9ff,transparent);
+}
+
+.game:hover{
+  transform:translateY(-8px);
+  border-color:#00d9ff;
+  box-shadow:0 0 25px rgba(0,180,255,.3);
+}
+
+.game .icon{
+  font-size:48px;
+}
+
+.game h3{
+  font-size:18px;
+}
+
+.game small{
+  color:#8ea8c5;
+}
+
+/* PACKAGES */
+.tabs{
+  display:flex;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-bottom:25px;
+}
+
+.tab{
+  padding:11px 18px;
+  border-radius:25px;
+  background:#07172c;
+  border:1px solid #12507d;
+  color:#b8d8f0;
+  cursor:pointer;
+  font-weight:bold;
+}
+
+.tab.active{
+  background:linear-gradient(90deg,#006dff,#00d5ff);
+  color:#fff;
+  border-color:#00d9ff;
+}
+
+.products{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:15px;
+}
+
+.product{
+  padding:20px;
+  border-radius:15px;
+  border:1px solid #104c78;
+  background:linear-gradient(145deg,#071b35,#030914);
+  text-align:center;
+  transition:.3s;
+}
+
+.product:hover{
+  transform:translateY(-5px);
+  border-color:#00d9ff;
+  box-shadow:0 0 20px rgba(0,200,255,.2);
+}
+
+.diamond{
+  font-size:40px;
+  margin-bottom:10px;
+}
+
+.product h3{
+  font-size:17px;
+  margin-bottom:7px;
+}
+
+.price{
+  color:#00e0ff;
+  font-size:22px;
+  font-weight:900;
+  margin:10px 0 15px;
+}
+
+.buy{
+  border:0;
+  width:100%;
+  padding:11px;
+  border-radius:9px;
+  background:linear-gradient(90deg,#006dff,#00bfff);
+  color:white;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+/* ORDER */
+.order-wrap{
+  max-width:700px;
+  margin:auto;
+  padding:30px;
+  border:1px solid #07518a;
+  border-radius:20px;
+  background:linear-gradient(145deg,#07182f,#020712);
+  box-shadow:0 0 35px rgba(0,130,255,.12);
+}
+
+.form-group{
+  margin-bottom:17px;
+}
+
+.form-group label{
+  display:block;
+  margin-bottom:7px;
+  color:#b9d8ee;
+}
+
+input,select{
+  width:100%;
+  padding:14px;
+  border-radius:10px;
+  border:1px solid #19567f;
+  background:#020914;
+  color:white;
+  outline:none;
+}
+
+input:focus,select:focus{
+  border-color:#00d9ff;
+  box-shadow:0 0 10px rgba(0,210,255,.2);
+}
+
+.payments{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+}
+
+.pay{
+  padding:13px;
+  border-radius:10px;
+  background:#081b31;
+  border:1px solid #164c70;
+  text-align:center;
+  cursor:pointer;
+}
+
+.pay.selected{
+  border-color:#00d9ff;
+  background:#06335a;
+}
+
+.submit{
+  width:100%;
+  padding:15px;
+  border:0;
+  border-radius:12px;
+  background:linear-gradient(90deg,#006dff,#00d9ff);
+  color:white;
+  font-size:17px;
+  font-weight:900;
+  cursor:pointer;
+  box-shadow:0 0 20px rgba(0,190,255,.3);
+}
+
+/* SUPPORT */
+.support{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:18px;
+}
+
+.support-card{
+  padding:25px;
+  text-align:center;
+  border-radius:16px;
+  border:1px solid #164d78;
+  background:#06152a;
+}
+
+.support-card .big{
+  font-size:40px;
+  margin-bottom:10px;
+}
+
+.support-card h3{
+  margin-bottom:7px;
+}
+
+.support-card p{
+  color:#a9c3d
