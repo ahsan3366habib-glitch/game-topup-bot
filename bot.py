@@ -1,13 +1,15 @@
 import os
+import time
+import sqlite3
 import logging
 import requests
-import time
 
 from telegram import (
     Update,
     InlineKeyboardButton,
     InlineKeyboardMarkup
 )
+
 from telegram.ext import (
     ApplicationBuilder,
     CommandHandler,
@@ -18,19 +20,25 @@ from telegram.ext import (
 )
 
 
-# =========================
+# =========================================================
 # SETTINGS
-# =========================
+# =========================================================
 
 BOT_TOKEN = os.environ["BOT_TOKEN"]
-API_KEY = os.environ.get("RECHARGEGAME_API_KEY", "")
+
+API_KEY = os.environ.get(
+    "RECHARGEGAME_API_KEY",
+    ""
+)
 
 API = "https://api.rechargegame.games"
 
+DB_FILE = "topup_bot.db"
 
-# =========================
+
+# =========================================================
 # LOGGING
-# =========================
+# =========================================================
 
 logging.basicConfig(
     level=logging.INFO,
@@ -40,75 +48,328 @@ logging.basicConfig(
 log = logging.getLogger(__name__)
 
 
-# =========================
-# FREE FIRE PACKAGES
-# =========================
+# =========================================================
+# PACKAGE LIST
+# =========================================================
 #
-# product = RechargeGames product name
-# price   = supplier cost shown in bot
+# Customer sees BDT price.
 #
-# These are the package names/prices
-# we were using during setup.
+# supplier_product = RechargeGames product name
+# supplier_cost   = internal supplier cost
+# selling_price    = customer price in BDT
 #
-# Later we can replace these with
-# your actual Bangladesh selling prices.
-#
+# Change selling_price whenever you want.
+# =========================================================
 
 PACKAGES = {
 
-    "ff_115": (
-        "115 Diamonds",
-        "Free Fire 115 Diamonds",
-        "$0.61"
-    ),
+    "ff_115": {
+        "name": "115 Diamonds",
+        "supplier_product": "Free Fire 115 Diamonds",
+        "supplier_cost": "$0.61",
+        "selling_price": 80
+    },
 
-    "ff_240": (
-        "240 Diamonds",
-        "Free Fire 240 Diamonds",
-        "$1.22"
-    ),
+    "ff_240": {
+        "name": "240 Diamonds",
+        "supplier_product": "Free Fire 240 Diamonds",
+        "supplier_cost": "$1.22",
+        "selling_price": 160
+    },
 
-    "ff_610": (
-        "610 Diamonds",
-        "Free Fire 610 Diamonds",
-        "$3.07"
-    ),
+    "ff_610": {
+        "name": "610 Diamonds",
+        "supplier_product": "Free Fire 610 Diamonds",
+        "supplier_cost": "$3.07",
+        "selling_price": 400
+    },
 
-    "ff_1240": (
-        "1240 Diamonds",
-        "Free Fire 1240 Diamonds",
-        "$6.11"
-    ),
+    "ff_1240": {
+        "name": "1240 Diamonds",
+        "supplier_product": "Free Fire 1240 Diamonds",
+        "supplier_cost": "$6.11",
+        "selling_price": 800
+    },
 
-    "ff_2830": (
-        "2830 Diamonds",
-        "Free Fire 2830 Diamonds",
-        "$19.25"
-    ),
+    "ff_2830": {
+        "name": "2830 Diamonds",
+        "supplier_product": "Free Fire 2830 Diamonds",
+        "supplier_cost": "$19.25",
+        "selling_price": 2500
+    },
 
-    "ff_wlite": (
-        "Weekly Lite",
-        "Free Fire Weekly Lite",
-        "$0.34"
-    ),
+    "ff_wlite": {
+        "name": "Weekly Lite",
+        "supplier_product": "Free Fire Weekly Lite",
+        "supplier_cost": "$0.34",
+        "selling_price": 50
+    },
 
-    "ff_weekly": (
-        "Weekly Membership",
-        "Free Fire Weekly Membership",
-        "$1.22"
-    ),
+    "ff_weekly": {
+        "name": "Weekly Membership",
+        "supplier_product": "Free Fire Weekly Membership",
+        "supplier_cost": "$1.22",
+        "selling_price": 170
+    },
 
-    "ff_monthly": (
-        "Monthly Membership",
-        "Free Fire Monthly Membership",
-        "$6.10"
-    ),
+    "ff_monthly": {
+        "name": "Monthly Membership",
+        "supplier_product": "Free Fire Monthly Membership",
+        "supplier_cost": "$6.10",
+        "selling_price": 850
+    }
 }
 
 
-# =========================
+# =========================================================
+# DATABASE
+# =========================================================
+
+def get_db():
+
+    conn = sqlite3.connect(
+        DB_FILE,
+        check_same_thread=False
+    )
+
+    conn.row_factory = sqlite3.Row
+
+    return conn
+
+
+def init_db():
+
+    conn = get_db()
+
+    cur = conn.cursor()
+
+    # Users / wallet
+
+    cur.execute("""
+        CREATE TABLE IF NOT EXISTS users (
+            user_id INTEGER PRIMARY KEY,
+            balance REAL DEFAULT 0,
+            referral_code TEXT,
+            referred_by INTEGER,
+            created_at INTEGER
+        )
+    """)
+
+    # Orders
+
+    cur.execute("""
+        CREATE TABLE IF NOT EXISTS orders (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id INTEGER,
+            player_id TEXT,
+            package_key TEXT,
+            package_name TEXT,
+            selling_price REAL,
+            supplier_order_id TEXT,
+            supplier_status TEXT,
+            buyer_ref TEXT UNIQUE,
+            created_at INTEGER
+        )
+    """)
+
+    conn.commit()
+    conn.close()
+
+
+def ensure_user(user_id):
+
+    conn = get_db()
+
+    cur = conn.cursor()
+
+    cur.execute(
+        "SELECT user_id FROM users WHERE user_id = ?",
+        (user_id,)
+    )
+
+    row = cur.fetchone()
+
+    if not row:
+
+        referral_code = f"REF{user_id}"
+
+        cur.execute(
+            """
+            INSERT INTO users
+            (user_id, balance, referral_code, created_at)
+            VALUES (?, ?, ?, ?)
+            """,
+            (
+                user_id,
+                0,
+                referral_code,
+                int(time.time())
+            )
+        )
+
+        conn.commit()
+
+    conn.close()
+
+
+def get_balance(user_id):
+
+    ensure_user(user_id)
+
+    conn = get_db()
+
+    cur = conn.cursor()
+
+    cur.execute(
+        "SELECT balance FROM users WHERE user_id = ?",
+        (user_id,)
+    )
+
+    row = cur.fetchone()
+
+    conn.close()
+
+    if row:
+        return float(row["balance"])
+
+    return 0
+
+
+def save_order(
+    user_id,
+    player_id,
+    package_key,
+    package_name,
+    selling_price,
+    supplier_order_id,
+    supplier_status,
+    buyer_ref
+):
+
+    conn = get_db()
+
+    cur = conn.cursor()
+
+    cur.execute(
+        """
+        INSERT INTO orders
+        (
+            user_id,
+            player_id,
+            package_key,
+            package_name,
+            selling_price,
+            supplier_order_id,
+            supplier_status,
+            buyer_ref,
+            created_at
+        )
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """,
+        (
+            user_id,
+            player_id,
+            package_key,
+            package_name,
+            selling_price,
+            supplier_order_id,
+            supplier_status,
+            buyer_ref,
+            int(time.time())
+        )
+    )
+
+    conn.commit()
+
+    order_id = cur.lastrowid
+
+    conn.close()
+
+    return order_id
+
+
+def get_user_orders(user_id, limit=10):
+
+    conn = get_db()
+
+    cur = conn.cursor()
+
+    cur.execute(
+        """
+        SELECT *
+        FROM orders
+        WHERE user_id = ?
+        ORDER BY id DESC
+        LIMIT ?
+        """,
+        (
+            user_id,
+            limit
+        )
+    )
+
+    rows = cur.fetchall()
+
+    conn.close()
+
+    return rows
+
+
+def get_order(order_id, user_id):
+
+    conn = get_db()
+
+    cur = conn.cursor()
+
+    cur.execute(
+        """
+        SELECT *
+        FROM orders
+        WHERE id = ?
+        AND user_id = ?
+        """,
+        (
+            order_id,
+            user_id
+        )
+    )
+
+    row = cur.fetchone()
+
+    conn.close()
+
+    return row
+
+
+def update_supplier_status(
+    order_id,
+    status
+):
+
+    conn = get_db()
+
+    cur = conn.cursor()
+
+    cur.execute(
+        """
+        UPDATE orders
+        SET supplier_status = ?
+        WHERE id = ?
+        """,
+        (
+            status,
+            order_id
+        )
+    )
+
+    conn.commit()
+
+    conn.close()
+
+
+# =========================================================
 # MAIN MENU
-# =========================
+# =========================================================
 
 def main_menu():
 
@@ -148,9 +409,9 @@ def main_menu():
     ])
 
 
-# =========================
+# =========================================================
 # GAME MENU
-# =========================
+# =========================================================
 
 def games_menu():
 
@@ -185,41 +446,49 @@ def games_menu():
     ])
 
 
-# =========================
+# =========================================================
 # PACKAGE MENU
-# =========================
+# =========================================================
 
 def package_menu():
 
     rows = []
 
-    for key, (name, product, price) in PACKAGES.items():
+    for key, package in PACKAGES.items():
 
         rows.append([
+
             InlineKeyboardButton(
-                f"{name} — {price}",
+                f"💎 {package['name']} — ৳{package['selling_price']}",
                 callback_data=key
             )
+
         ])
 
     rows.append([
+
         InlineKeyboardButton(
             "🔙 Back",
             callback_data="games"
         )
+
     ])
 
     return InlineKeyboardMarkup(rows)
 
 
-# =========================
+# =========================================================
 # /START
-# =========================
+# =========================================================
 
 async def start(
     update: Update,
     context: ContextTypes.DEFAULT_TYPE
 ):
+
+    user_id = update.effective_user.id
+
+    ensure_user(user_id)
 
     context.user_data.clear()
 
@@ -232,9 +501,9 @@ async def start(
     )
 
 
-# =========================
+# =========================================================
 # /HELP
-# =========================
+# =========================================================
 
 async def help_cmd(
     update: Update,
@@ -243,15 +512,17 @@ async def help_cmd(
 
     await update.message.reply_text(
 
+        "🎮 Game TopUp BD\n\n"
+
         "/start — Main menu\n"
-        "/ping — Telegram + RechargeGames API test\n"
+        "/ping — RechargeGames API test\n"
         "/help — Help"
     )
 
 
-# =========================
+# =========================================================
 # /PING
-# =========================
+# =========================================================
 
 async def ping(
     update: Update,
@@ -261,7 +532,7 @@ async def ping(
     if not API_KEY:
 
         await update.message.reply_text(
-            "❌ RECHARGEGAME_API_KEY Render Environment Variables-এ নেই।"
+            "❌ RechargeGames API key পাওয়া যাচ্ছে না।"
         )
 
         return
@@ -294,7 +565,7 @@ async def ping(
 
             await update.message.reply_text(
 
-                "⚠️ RechargeGames API response:\n\n"
+                "⚠️ API response:\n\n"
                 f"{data}"
             )
 
@@ -309,9 +580,9 @@ async def ping(
         )
 
 
-# =========================
+# =========================================================
 # BUTTON HANDLER
-# =========================
+# =========================================================
 
 async def buttons(
     update: Update,
@@ -324,10 +595,14 @@ async def buttons(
 
     data = query.data
 
+    user_id = query.from_user.id
 
-    # =====================
+    ensure_user(user_id)
+
+
+    # =====================================================
     # HOME
-    # =====================
+    # =====================================================
 
     if data == "home":
 
@@ -343,9 +618,9 @@ async def buttons(
         return
 
 
-    # =====================
-    # GAME MENU
-    # =====================
+    # =====================================================
+    # GAMES
+    # =====================================================
 
     if data == "games":
 
@@ -359,9 +634,9 @@ async def buttons(
         return
 
 
-    # =====================
+    # =====================================================
     # FREE FIRE
-    # =====================
+    # =====================================================
 
     if data == "freefire":
 
@@ -379,9 +654,9 @@ async def buttons(
         return
 
 
-    # =====================
+    # =====================================================
     # ML / PUBG
-    # =====================
+    # =====================================================
 
     if data in ("ml", "pubg"):
 
@@ -396,9 +671,9 @@ async def buttons(
         return
 
 
-    # =====================
+    # =====================================================
     # PACKAGE SELECT
-    # =====================
+    # =====================================================
 
     if data in PACKAGES:
 
@@ -416,21 +691,24 @@ async def buttons(
 
         context.user_data["package"] = data
 
-        name, product, price = PACKAGES[data]
+        package = PACKAGES[data]
 
         player_id = context.user_data.get(
             "player_id"
         )
 
+        balance = get_balance(user_id)
 
         keyboard = InlineKeyboardMarkup([
 
             [
                 InlineKeyboardButton(
-                    "✅ Confirm",
+                    "🧪 Confirm TEST Order",
                     callback_data="confirm"
-                ),
+                )
+            ],
 
+            [
                 InlineKeyboardButton(
                     "❌ Cancel",
                     callback_data="cancel"
@@ -444,18 +722,20 @@ async def buttons(
 
             "📋 Order Summary\n\n"
 
-            "🎮 Game: Free Fire\n"
+            "🎮 Free Fire\n"
 
             f"🆔 Player ID: {player_id}\n"
 
-            f"💎 Package: {name}\n"
+            f"💎 Package: {package['name']}\n"
 
-            f"💵 Supplier cost: {price}\n\n"
+            f"💵 Price: ৳{package['selling_price']}\n"
+
+            f"💰 Balance: ৳{balance:.2f}\n\n"
 
             "🧪 TEST MODE\n"
-            "Confirm করলে RechargeGames-এ TEST order পাঠানো হবে।\n\n"
+            "Confirm করলে RechargeGames-এ TEST order যাবে।\n\n"
 
-            "⚠️ Payment system এখনো চালু হয়নি।",
+            "⚠️ Customer payment এখনো চালু হয়নি।",
 
             reply_markup=keyboard
         )
@@ -463,9 +743,9 @@ async def buttons(
         return
 
 
-    # =====================
-    # CONFIRM
-    # =====================
+    # =====================================================
+    # CONFIRM TEST ORDER
+    # =====================================================
 
     if data == "confirm":
 
@@ -494,8 +774,7 @@ async def buttons(
 
             await query.edit_message_text(
 
-                "❌ Order information পাওয়া যায়নি।\n"
-                "আবার চেষ্টা করুন।",
+                "❌ Order information পাওয়া যায়নি।",
 
                 reply_markup=main_menu()
             )
@@ -503,22 +782,18 @@ async def buttons(
             return
 
 
-        name, product, price = PACKAGES[
-            package_key
+        package = PACKAGES[package_key]
+
+        product = package[
+            "supplier_product"
         ]
 
-
-        # Unique TEST reference
         buyer_ref = (
             f"TEST-"
-            f"{query.from_user.id}-"
+            f"{user_id}-"
             f"{int(time.time())}"
         )
 
-
-        # =====================
-        # RECHARGEGAMES PAYLOAD
-        # =====================
 
         payload = {
 
@@ -566,47 +841,72 @@ async def buttons(
                 }
 
 
-            # =====================
+            # =================================================
             # SUCCESS
-            # =====================
+            # =================================================
 
             if response.status_code in (200, 201):
 
-                order_id = result.get(
+                supplier_order_id = result.get(
                     "order_id",
                     "unknown"
                 )
 
-                status = result.get(
+                supplier_status = result.get(
                     "status",
                     "pending"
                 )
 
 
+                local_order_id = save_order(
+
+                    user_id=user_id,
+
+                    player_id=player_id,
+
+                    package_key=package_key,
+
+                    package_name=package["name"],
+
+                    selling_price=package[
+                        "selling_price"
+                    ],
+
+                    supplier_order_id=supplier_order_id,
+
+                    supplier_status=supplier_status,
+
+                    buyer_ref=buyer_ref
+                )
+
+
                 await query.edit_message_text(
 
-                    "🧪 RechargeGames TEST order created!\n\n"
+                    "🧪 TEST ORDER CREATED ✅\n\n"
 
-                    "🎮 Free Fire\n"
+                    f"📋 Order ID: #{local_order_id}\n"
+
+                    f"🎮 Free Fire\n"
 
                     f"🆔 Player ID: {player_id}\n"
 
-                    f"💎 Package: {name}\n"
+                    f"💎 {package['name']}\n"
 
-                    f"🆔 Supplier Order: {order_id}\n"
+                    f"💵 Price: ৳{package['selling_price']}\n"
 
-                    f"📦 Status: {status}\n\n"
+                    f"📦 Status: {supplier_status}\n"
 
-                    "⚠️ এটি TEST order।\n"
-                    "Payment system এখনো চালু হয়নি।",
+                    f"🆔 Supplier ID: {supplier_order_id}\n\n"
+
+                    "⚠️ এটি TEST order।",
 
                     reply_markup=main_menu()
                 )
 
 
-            # =====================
+            # =================================================
             # FAILED
-            # =====================
+            # =================================================
 
             else:
 
@@ -614,8 +914,7 @@ async def buttons(
 
                     "❌ RechargeGames order failed.\n\n"
 
-                    f"HTTP Status: "
-                    f"{response.status_code}\n\n"
+                    f"HTTP: {response.status_code}\n\n"
 
                     f"Response:\n{result}",
 
@@ -633,7 +932,6 @@ async def buttons(
             await query.edit_message_text(
 
                 "❌ RechargeGames connection failed.\n\n"
-
                 f"{e}",
 
                 reply_markup=main_menu()
@@ -642,9 +940,9 @@ async def buttons(
         return
 
 
-    # =====================
+    # =====================================================
     # CANCEL
-    # =====================
+    # =====================================================
 
     if data == "cancel":
 
@@ -660,15 +958,22 @@ async def buttons(
         return
 
 
-    # =====================
+    # =====================================================
     # BALANCE
-    # =====================
+    # =====================================================
 
     if data == "balance":
 
+        balance = get_balance(user_id)
+
         await query.edit_message_text(
 
-            "💰 Balance system পরে যোগ হবে।",
+            "💰 My Balance\n\n"
+
+            f"💵 Balance: ৳{balance:.2f}\n\n"
+
+            "ℹ️ Balance recharge/payment system "
+            "এখনো চালু হয়নি।",
 
             reply_markup=main_menu()
         )
@@ -676,15 +981,53 @@ async def buttons(
         return
 
 
-    # =====================
-    # ORDERS
-    # =====================
+    # =====================================================
+    # ORDER HISTORY
+    # =====================================================
 
     if data == "orders":
 
+        orders = get_user_orders(
+            user_id,
+            limit=10
+        )
+
+
+        if not orders:
+
+            await query.edit_message_text(
+
+                "📋 My Orders\n\n"
+                "এখনো কোনো order নেই।",
+
+                reply_markup=main_menu()
+            )
+
+            return
+
+
+        text = "📋 My Orders\n\n"
+
+
+        for order in orders:
+
+            text += (
+
+                f"🆔 Order: #{order['id']}\n"
+
+                f"💎 {order['package_name']}\n"
+
+                f"🆔 Player ID: {order['player_id']}\n"
+
+                f"💵 ৳{order['selling_price']}\n"
+
+                f"📦 Status: {order['supplier_status']}\n\n"
+            )
+
+
         await query.edit_message_text(
 
-            "📋 Order history পরে যোগ হবে।",
+            text,
 
             reply_markup=main_menu()
         )
@@ -692,15 +1035,51 @@ async def buttons(
         return
 
 
-    # =====================
+    # =====================================================
     # REFERRAL
-    # =====================
+    # =====================================================
 
     if data == "referral":
 
+        ensure_user(user_id)
+
+        conn = get_db()
+
+        cur = conn.cursor()
+
+        cur.execute(
+
+            """
+            SELECT referral_code
+            FROM users
+            WHERE user_id = ?
+            """,
+
+            (user_id,)
+        )
+
+        row = cur.fetchone()
+
+        conn.close()
+
+
+        referral_code = (
+            row["referral_code"]
+            if row
+            else f"REF{user_id}"
+        )
+
+
         await query.edit_message_text(
 
-            "🎁 Referral system পরে যোগ হবে।",
+            "🎁 Referral\n\n"
+
+            f"Your referral code:\n"
+            f"`{referral_code}`\n\n"
+
+            "Referral reward system পরে চালু হবে।",
+
+            parse_mode="Markdown",
 
             reply_markup=main_menu()
         )
@@ -708,15 +1087,19 @@ async def buttons(
         return
 
 
-    # =====================
+    # =====================================================
     # SUPPORT
-    # =====================
+    # =====================================================
 
     if data == "support":
 
         await query.edit_message_text(
 
-            "🆘 Support contact পরে সেট হবে।",
+            "🆘 Support\n\n"
+
+            "কোনো সমস্যা হলে Admin-এর সাথে যোগাযোগ করুন।\n\n"
+
+            "📞 Support system পরে configure করা হবে।",
 
             reply_markup=main_menu()
         )
@@ -724,21 +1107,28 @@ async def buttons(
         return
 
 
-# =========================
+# =========================================================
 # TEXT HANDLER
-# =========================
+# =========================================================
 
 async def text_handler(
     update: Update,
     context: ContextTypes.DEFAULT_TYPE
 ):
 
+    user_id = update.effective_user.id
+
+    ensure_user(user_id)
+
+
+    # =====================================================
+    # PLAYER ID
+    # =====================================================
+
     if context.user_data.get("state") == "player":
 
         player_id = update.message.text.strip()
 
-
-        # Player ID validation
 
         if (
             not player_id.isdigit()
@@ -773,6 +1163,10 @@ async def text_handler(
         return
 
 
+    # =====================================================
+    # DEFAULT
+    # =====================================================
+
     await update.message.reply_text(
 
         "নিচের menu ব্যবহার করুন 👇",
@@ -781,11 +1175,15 @@ async def text_handler(
     )
 
 
-# =========================
+# =========================================================
 # MAIN
-# =========================
+# =========================================================
 
 def main():
+
+    # Create database/tables
+    init_db()
+
 
     app = (
         ApplicationBuilder()
@@ -837,18 +1235,17 @@ def main():
     )
 
 
-    # Start bot
-
     log.info(
         "Game TopUp BD bot started"
     )
 
+
     app.run_polling()
 
 
-# =========================
+# =========================================================
 # RUN
-# =========================
+# =========================================================
 
 if __name__ == "__main__":
     main()
