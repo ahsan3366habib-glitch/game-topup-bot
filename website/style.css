@@ -1,0 +1,349 @@
+*{box-sizing:border-box}
+
+body{
+margin:0;
+font-family:system-ui,-apple-system,Segoe UI,Roboto,"Noto Sans Bengali",sans-serif;
+background:#080b12;
+color:#f7f8fb
+}
+
+a{color:inherit}
+
+.nav{
+height:70px;
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:0 6%;
+border-bottom:1px solid #202532;
+background:#0b0f18cc;
+backdrop-filter:blur(12px);
+position:sticky;
+top:0;
+z-index:10
+}
+
+.brand{font-size:21px;font-weight:800}
+.brand span{margin-right:7px}
+.brand b{color:#7c8cff}
+
+.navbtn{
+padding:9px 15px;
+border:1px solid #30384b;
+border-radius:10px;
+text-decoration:none;
+font-size:14px
+}
+
+.hero{
+max-width:1150px;
+margin:auto;
+padding:75px 6%;
+display:grid;
+grid-template-columns:1.3fr .7fr;
+gap:45px;
+align-items:center
+}
+
+.pill{
+display:inline-block;
+background:#171d2d;
+color:#aeb9ff;
+border:1px solid #303a60;
+padding:7px 12px;
+border-radius:999px;
+font-size:13px
+}
+
+.hero h1{
+font-size:clamp(40px,7vw,70px);
+line-height:1.03;
+margin:20px 0 15px
+}
+
+.hero h1 span{color:#7c8cff}
+
+.hero p{
+color:#aab1c0;
+max-width:570px;
+line-height:1.7
+}
+
+.primary{
+display:inline-block;
+border:0;
+border-radius:12px;
+background:#6978ff;
+color:#fff;
+padding:13px 20px;
+font-weight:800;
+text-decoration:none;
+cursor:pointer;
+margin-top:15px
+}
+
+.hero-card{
+background:linear-gradient(145deg,#12182a,#0e121c);
+border:1px solid #293248;
+border-radius:24px;
+padding:32px;
+text-align:center;
+box-shadow:0 20px 60px #0005
+}
+
+.orb{
+width:100px;
+height:100px;
+border-radius:28px;
+margin:auto;
+background:#202946;
+display:grid;
+place-items:center;
+font-size:50px
+}
+
+.hero-card h3{margin-bottom:5px}
+.hero-card p{margin:0 auto 18px}
+
+.trust{
+color:#b8bfd0;
+text-align:left;
+line-height:2
+}
+
+.section{
+max-width:1150px;
+margin:auto;
+padding:45px 6%
+}
+
+.section-head small{
+color:#7886ff;
+font-weight:800;
+letter-spacing:1px
+}
+
+.section-head h2{
+font-size:30px;
+margin:5px 0 22px
+}
+
+.game-grid{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:15px
+}
+
+.game{
+background:#111722;
+color:#fff;
+border:1px solid #273044;
+border-radius:16px;
+padding:20px;
+text-align:left;
+cursor:pointer
+}
+
+.game span{
+font-size:30px;
+display:block;
+margin-bottom:12px
+}
+
+.game strong,.game small{display:block}
+
+.game small{
+color:#8e97aa;
+margin-top:4px
+}
+
+.game.active{
+border-color:#6978ff;
+box-shadow:0 0 0 1px #6978ff22
+}
+
+.game.disabled{
+opacity:.55;
+cursor:not-allowed
+}
+
+.tabs{
+display:flex;
+gap:9px;
+flex-wrap:wrap;
+margin-bottom:18px
+}
+
+.tab{
+background:#111722;
+color:#b9c0ce;
+border:1px solid #283145;
+border-radius:10px;
+padding:9px 12px;
+cursor:pointer
+}
+
+.tab.active{
+background:#252e59;
+color:#fff;
+border-color:#6978ff
+}
+
+.packages{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:12px
+}
+
+.pack{
+background:#101621;
+border:1px solid #273044;
+border-radius:15px;
+padding:17px
+}
+
+.pack h3{
+font-size:16px;
+margin:0 0 10px
+}
+
+.pack .price{
+font-size:22px;
+font-weight:900
+}
+
+.pack button{
+width:100%;
+margin-top:13px;
+background:#202a46;
+color:#fff;
+border:1px solid #34446d;
+padding:9px;
+border-radius:9px;
+cursor:pointer
+}
+
+.order-box{
+max-width:650px;
+background:#101621;
+border:1px solid #293349;
+border-radius:20px;
+padding:25px
+}
+
+.order-box label{
+display:block;
+font-size:14px;
+color:#aeb6c7;
+margin-bottom:15px
+}
+
+.order-box input,
+.order-box select{
+display:block;
+width:100%;
+margin-top:7px;
+background:#0a0e15;
+border:1px solid #2c3548;
+color:#fff;
+border-radius:10px;
+padding:12px;
+outline:none
+}
+
+.full{
+width:100%;
+margin-top:3px
+}
+
+.result{
+margin-top:15px;
+padding:15px;
+border-radius:12px;
+background:#18233a;
+color:#dce3ff
+}
+
+.hidden{display:none}
+
+.info{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:15px
+}
+
+.info-card{
+background:#101621;
+border:1px solid #273044;
+border-radius:16px;
+padding:22px
+}
+
+.info-card span{font-size:28px}
+
+.info-card h3{margin:8px 0}
+
+.info-card p{
+color:#9da6b8;
+line-height:1.6
+}
+
+footer{
+text-align:center;
+padding:35px;
+color:#737d90;
+border-top:1px solid #202532;
+font-size:13px
+}
+
+@media(max-width:800px){
+
+.hero{
+grid-template-columns:1fr;
+padding-top:50px
+}
+
+.hero-card{display:none}
+
+.game-grid{
+grid-template-columns:1fr
+}
+
+.packages{
+grid-template-columns:repeat(2,1fr)
+}
+
+.info{
+grid-template-columns:1fr
+}
+
+}
+
+@media(max-width:430px){
+
+.packages{
+grid-template-columns:1fr 1fr
+}
+
+.pack{
+padding:13px
+}
+
+.pack h3{
+font-size:14px
+}
+
+.pack .price{
+font-size:19px
+}
+
+.nav{
+padding:0 4%
+}
+
+.section{
+padding-left:4%;
+padding-right:4%
+}
+
+  }
