@@ -4,51 +4,30 @@ import sqlite3
 import logging
 import requests
 
-from telegram import (
-    Update,
-    InlineKeyboardButton,
-    InlineKeyboardMarkup
-)
-
+from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import (
     ApplicationBuilder,
     CommandHandler,
     CallbackQueryHandler,
     MessageHandler,
     ContextTypes,
-    filters
+    filters,
 )
 
-
-# =========================================================
-# SETTINGS
-# =========================================================
+# =========================
+# CONFIG
+# =========================
 
 BOT_TOKEN = os.environ["BOT_TOKEN"]
+API_KEY = os.environ.get("RECHARGEGAME_API_KEY", "")
+NAGAD_NUMBER = os.environ.get("NAGAD_NUMBER", "")
+ADMIN_USER_ID = os.environ.get("ADMIN_USER_ID", "")
 
-API_KEY = os.environ.get(
-    "RECHARGEGAME_API_KEY",
-    ""
-)
-
-NAGAD_NUMBER = os.environ.get(
-    "NAGAD_NUMBER",
-    ""
-)
-
-ADMIN_USER_ID = os.environ.get(
-    "ADMIN_USER_ID",
-    ""
-)
+# Support Telegram ID
+SUPPORT_ID = "6907180282"
 
 API = "https://api.rechargegame.games"
-
 DB_FILE = "topup_bot.db"
-
-
-# =========================================================
-# LOGGING
-# =========================================================
 
 logging.basicConfig(
     level=logging.INFO,
@@ -58,12 +37,11 @@ logging.basicConfig(
 log = logging.getLogger(__name__)
 
 
-# =========================================================
-# PACKAGES
-# =========================================================
+# =========================
+# FREE FIRE PACKAGES
+# =========================
 
 PACKAGES = {
-
     "ff_115": {
         "name": "115 Diamonds",
         "supplier_product": "Free Fire 115 Diamonds",
@@ -122,26 +100,19 @@ PACKAGES = {
 }
 
 
-# =========================================================
+# =========================
 # DATABASE
-# =========================================================
+# =========================
 
 def get_db():
-
-    conn = sqlite3.connect(
-        DB_FILE,
-        check_same_thread=False
-    )
-
+    conn = sqlite3.connect(DB_FILE, check_same_thread=False)
     conn.row_factory = sqlite3.Row
-
     return conn
 
 
 def init_db():
 
     conn = get_db()
-
     cur = conn.cursor()
 
     cur.execute("""
@@ -192,7 +163,6 @@ def init_db():
 def ensure_user(user_id):
 
     conn = get_db()
-
     cur = conn.cursor()
 
     cur.execute(
@@ -228,7 +198,6 @@ def get_balance(user_id):
     ensure_user(user_id)
 
     conn = get_db()
-
     cur = conn.cursor()
 
     cur.execute(
@@ -246,6 +215,10 @@ def get_balance(user_id):
     return 0
 
 
+# =========================
+# PAYMENT DATABASE
+# =========================
+
 def create_payment(
     user_id,
     player_id,
@@ -256,7 +229,6 @@ def create_payment(
 ):
 
     conn = get_db()
-
     cur = conn.cursor()
 
     cur.execute(
@@ -298,15 +270,10 @@ def create_payment(
 def get_payment(payment_id):
 
     conn = get_db()
-
     cur = conn.cursor()
 
     cur.execute(
-        """
-        SELECT *
-        FROM payments
-        WHERE id = ?
-        """,
+        "SELECT * FROM payments WHERE id = ?",
         (payment_id,)
     )
 
@@ -317,13 +284,9 @@ def get_payment(payment_id):
     return row
 
 
-def update_payment_status(
-    payment_id,
-    status
-):
+def update_payment_status(payment_id, status):
 
     conn = get_db()
-
     cur = conn.cursor()
 
     cur.execute(
@@ -332,15 +295,16 @@ def update_payment_status(
         SET status = ?
         WHERE id = ?
         """,
-        (
-            status,
-            payment_id
-        )
+        (status, payment_id)
     )
 
     conn.commit()
     conn.close()
 
+
+# =========================
+# ORDER DATABASE
+# =========================
 
 def save_order(
     user_id,
@@ -356,7 +320,6 @@ def save_order(
 ):
 
     conn = get_db()
-
     cur = conn.cursor()
 
     cur.execute(
@@ -404,7 +367,6 @@ def save_order(
 def get_user_orders(user_id, limit=10):
 
     conn = get_db()
-
     cur = conn.cursor()
 
     cur.execute(
@@ -415,10 +377,7 @@ def get_user_orders(user_id, limit=10):
         ORDER BY id DESC
         LIMIT ?
         """,
-        (
-            user_id,
-            limit
-        )
+        (user_id, limit)
     )
 
     rows = cur.fetchall()
@@ -428,14 +387,13 @@ def get_user_orders(user_id, limit=10):
     return rows
 
 
-# =========================================================
+# =========================
 # MENUS
-# =========================================================
+# =========================
 
 def main_menu():
 
     return InlineKeyboardMarkup([
-
         [
             InlineKeyboardButton(
                 "🎮 Game Top Up",
@@ -448,6 +406,7 @@ def main_menu():
                 "💰 My Balance",
                 callback_data="balance"
             ),
+
             InlineKeyboardButton(
                 "📋 My Orders",
                 callback_data="orders"
@@ -459,6 +418,7 @@ def main_menu():
                 "🎁 Referral",
                 callback_data="referral"
             ),
+
             InlineKeyboardButton(
                 "🆘 Support",
                 callback_data="support"
@@ -483,6 +443,7 @@ def games_menu():
                 "⚔️ Mobile Legends",
                 callback_data="ml"
             ),
+
             InlineKeyboardButton(
                 "🎯 PUBG Mobile",
                 callback_data="pubg"
@@ -521,14 +482,11 @@ def package_menu():
     return InlineKeyboardMarkup(rows)
 
 
-# =========================================================
+# =========================
 # START
-# =========================================================
+# =========================
 
-async def start(
-    update: Update,
-    context: ContextTypes.DEFAULT_TYPE
-):
+async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     user_id = update.effective_user.id
 
@@ -543,14 +501,11 @@ async def start(
     )
 
 
-# =========================================================
+# =========================
 # HELP
-# =========================================================
+# =========================
 
-async def help_cmd(
-    update: Update,
-    context: ContextTypes.DEFAULT_TYPE
-):
+async def help_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     await update.message.reply_text(
         "/start — Main menu\n"
@@ -559,14 +514,11 @@ async def help_cmd(
     )
 
 
-# =========================================================
-# PING
-# =========================================================
+# =========================
+# API PING
+# =========================
 
-async def ping(
-    update: Update,
-    context: ContextTypes.DEFAULT_TYPE
-):
+async def ping(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     if not API_KEY:
 
@@ -611,14 +563,11 @@ async def ping(
         )
 
 
-# =========================================================
-# BUTTONS
-# =========================================================
+# =========================
+# BUTTON HANDLER
+# =========================
 
-async def buttons(
-    update: Update,
-    context: ContextTypes.DEFAULT_TYPE
-):
+async def buttons(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     query = update.callback_query
 
@@ -630,11 +579,7 @@ async def buttons(
 
     ensure_user(user_id)
 
-
-    # =====================================================
     # HOME
-    # =====================================================
-
     if data == "home":
 
         context.user_data.clear()
@@ -646,11 +591,7 @@ async def buttons(
 
         return
 
-
-    # =====================================================
     # GAMES
-    # =====================================================
-
     if data == "games":
 
         await query.edit_message_text(
@@ -660,11 +601,7 @@ async def buttons(
 
         return
 
-
-    # =====================================================
     # FREE FIRE
-    # =====================================================
-
     if data == "freefire":
 
         context.user_data.clear()
@@ -679,11 +616,7 @@ async def buttons(
 
         return
 
-
-    # =====================================================
-    # ML / PUBG
-    # =====================================================
-
+    # OTHER GAMES
     if data in ("ml", "pubg"):
 
         await query.edit_message_text(
@@ -694,11 +627,7 @@ async def buttons(
 
         return
 
-
-    # =====================================================
     # PACKAGE
-    # =====================================================
-
     if data in PACKAGES:
 
         if context.user_data.get("state") != "package":
@@ -710,15 +639,11 @@ async def buttons(
 
             return
 
-
         context.user_data["package"] = data
 
         package = PACKAGES[data]
 
-        player_id = context.user_data.get(
-            "player_id"
-        )
-
+        player_id = context.user_data.get("player_id")
 
         keyboard = InlineKeyboardMarkup([
 
@@ -737,7 +662,6 @@ async def buttons(
             ]
         ])
 
-
         await query.edit_message_text(
 
             "📋 Order Summary\n\n"
@@ -752,21 +676,12 @@ async def buttons(
 
         return
 
-
-    # =====================================================
-    # NAGAD PAYMENT
-    # =====================================================
-
+    # NAGAD
     if data == "pay_nagad":
 
-        package_key = context.user_data.get(
-            "package"
-        )
+        package_key = context.user_data.get("package")
 
-        player_id = context.user_data.get(
-            "player_id"
-        )
-
+        player_id = context.user_data.get("player_id")
 
         if not package_key or not player_id:
 
@@ -777,11 +692,9 @@ async def buttons(
 
             return
 
-
         package = PACKAGES[package_key]
 
         amount = package["selling_price"]
-
 
         await query.edit_message_text(
 
@@ -793,8 +706,7 @@ async def buttons(
             f"💵 Amount: ৳{amount}\n\n"
 
             "১️⃣ উপরের Nagad নম্বরে টাকা পাঠান।\n"
-            "২️⃣ টাকা পাঠানোর পর নিচের "
-            "I Paid button চাপুন।\n"
+            "২️⃣ টাকা পাঠানোর পর নিচের I Paid button চাপুন।\n"
             "৩️⃣ তারপর Transaction ID দিন।",
 
             parse_mode="Markdown",
@@ -814,26 +726,18 @@ async def buttons(
                         callback_data=package_key
                     )
                 ]
+
             ])
         )
 
         return
 
-
-    # =====================================================
     # I PAID
-    # =====================================================
-
     if data == "i_paid":
 
-        package_key = context.user_data.get(
-            "package"
-        )
+        package_key = context.user_data.get("package")
 
-        player_id = context.user_data.get(
-            "player_id"
-        )
-
+        player_id = context.user_data.get("player_id")
 
         if not package_key or not player_id:
 
@@ -844,17 +748,15 @@ async def buttons(
 
             return
 
-
-        context.user_data["state"] = (
-            "transaction_id"
-        )
-
+        context.user_data["state"] = "transaction_id"
 
         await query.edit_message_text(
 
             "🧾 Transaction ID দিন:\n\n"
+
             "উদাহরণ:\n"
             "`8A7B6C5D9E`\n\n"
+
             "শুধু Transaction ID পাঠান।",
 
             parse_mode="Markdown"
@@ -862,11 +764,7 @@ async def buttons(
 
         return
 
-
-    # =====================================================
     # CANCEL
-    # =====================================================
-
     if data == "cancel":
 
         context.user_data.clear()
@@ -878,11 +776,7 @@ async def buttons(
 
         return
 
-
-    # =====================================================
     # BALANCE
-    # =====================================================
-
     if data == "balance":
 
         balance = get_balance(user_id)
@@ -898,18 +792,10 @@ async def buttons(
 
         return
 
-
-    # =====================================================
     # ORDERS
-    # =====================================================
-
     if data == "orders":
 
-        orders = get_user_orders(
-            user_id,
-            10
-        )
-
+        orders = get_user_orders(user_id, 10)
 
         if not orders:
 
@@ -921,13 +807,12 @@ async def buttons(
 
             return
 
-
         text = "📋 My Orders\n\n"
-
 
         for order in orders:
 
             text += (
+
                 f"🆔 Order: #{order['id']}\n"
                 f"💎 {order['package_name']}\n"
                 f"🆔 Player ID: {order['player_id']}\n"
@@ -936,7 +821,6 @@ async def buttons(
                 f"📦 Top-up: {order['supplier_status']}\n\n"
             )
 
-
         await query.edit_message_text(
             text,
             reply_markup=main_menu()
@@ -944,19 +828,17 @@ async def buttons(
 
         return
 
-
-    # =====================================================
     # REFERRAL
-    # =====================================================
-
     if data == "referral":
 
         await query.edit_message_text(
 
             "🎁 Referral\n\n"
+
             f"Your referral code:\n"
             f"`REF{user_id}`\n\n"
-            "Referral reward system পরে চালু হবে।",
+
+            "Referral reward system পরে চালু হবে.",
 
             parse_mode="Markdown",
 
@@ -965,27 +847,36 @@ async def buttons(
 
         return
 
-
-    # =====================================================
     # SUPPORT
-    # =====================================================
-
     if data == "support":
 
         await query.edit_message_text(
 
             "🆘 Support\n\n"
-            "কোনো সমস্যা হলে Admin-এর সাথে যোগাযোগ করুন।",
 
-            reply_markup=main_menu()
+            "কোনো সমস্যা হলে Admin-এর সাথে যোগাযোগ করুন।\n\n"
+
+            f"👤 Support ID: `{SUPPORT_ID}`",
+
+            parse_mode="Markdown",
+
+            reply_markup=InlineKeyboardMarkup([
+
+                [
+                    InlineKeyboardButton(
+                        "🔙 Main Menu",
+                        callback_data="home"
+                    )
+                ]
+
+            ])
         )
 
         return
 
-
-    # =====================================================
+    # =========================
     # ADMIN APPROVE
-    # =====================================================
+    # =========================
 
     if data.startswith("approve:"):
 
@@ -998,15 +889,9 @@ async def buttons(
 
             return
 
+        payment_id = int(data.split(":")[1])
 
-        payment_id = int(
-            data.split(":")[1]
-        )
-
-        payment = get_payment(
-            payment_id
-        )
-
+        payment = get_payment(payment_id)
 
         if not payment:
 
@@ -1015,7 +900,6 @@ async def buttons(
             )
 
             return
-
 
         if payment["status"] != "pending":
 
@@ -1026,21 +910,7 @@ async def buttons(
 
             return
 
-
-        update_payment_status(
-            payment_id,
-            "approved"
-        )
-
-
-        package = PACKAGES[
-            payment["package_key"]
-        ]
-
-
-        # =================================================
-        # RECHARGEGAMES TEST ORDER
-        # =================================================
+        package = PACKAGES[payment["package_key"]]
 
         if not API_KEY:
 
@@ -1050,13 +920,10 @@ async def buttons(
 
             return
 
-
+        # TEST ORDER
         buyer_ref = (
-            f"TEST-"
-            f"{payment['user_id']}-"
-            f"{int(time.time())}"
+            f"TEST-{payment['user_id']}-{int(time.time())}"
         )
-
 
         payload = {
 
@@ -1076,7 +943,6 @@ async def buttons(
                 buyer_ref
         }
 
-
         try:
 
             response = requests.post(
@@ -1085,8 +951,7 @@ async def buttons(
 
                 headers={
                     "X-API-Key": API_KEY,
-                    "Content-Type":
-                        "application/json"
+                    "Content-Type": "application/json"
                 },
 
                 json=payload,
@@ -1094,14 +959,15 @@ async def buttons(
                 timeout=20
             )
 
-
             try:
+
                 result = response.json()
+
             except Exception:
+
                 result = {
                     "raw": response.text
                 }
-
 
             if response.status_code in (200, 201):
 
@@ -1115,6 +981,10 @@ async def buttons(
                     "pending"
                 )
 
+                update_payment_status(
+                    payment_id,
+                    "approved"
+                )
 
                 local_order_id = save_order(
 
@@ -1139,7 +1009,6 @@ async def buttons(
                     buyer_ref=buyer_ref
                 )
 
-
                 await query.edit_message_text(
 
                     "✅ PAYMENT APPROVED\n\n"
@@ -1150,11 +1019,12 @@ async def buttons(
                     f"💎 {payment['package_name']}\n"
                     f"💵 ৳{payment['amount']}\n"
                     f"🧾 Txn ID: {payment['transaction_id']}\n\n"
+
                     f"📦 Supplier: {supplier_status}\n"
                     f"🆔 Supplier ID: {supplier_order_id}\n\n"
+
                     "🧪 TEST order sent."
                 )
-
 
                 try:
 
@@ -1163,27 +1033,29 @@ async def buttons(
                         chat_id=payment["user_id"],
 
                         text=(
+
                             "✅ Payment approved!\n\n"
+
                             f"💎 {payment['package_name']}\n"
                             f"💵 ৳{payment['amount']}\n"
                             f"🧾 Txn ID: {payment['transaction_id']}\n\n"
+
                             "📦 Your top-up request has been sent."
                         )
                     )
 
                 except Exception:
-                    pass
 
+                    pass
 
             else:
 
                 await query.edit_message_text(
 
-                    "⚠️ Payment approved, "
-                    "but supplier order failed.\n\n"
+                    "⚠️ Supplier order failed.\n\n"
+
                     f"Response:\n{result}"
                 )
-
 
         except Exception as e:
 
@@ -1192,17 +1064,16 @@ async def buttons(
             )
 
             await query.edit_message_text(
-                "⚠️ Payment approved, "
-                "but RechargeGames connection failed.\n\n"
+
+                "⚠️ RechargeGames connection failed.\n\n"
                 f"{e}"
             )
 
         return
 
-
-    # =====================================================
+    # =========================
     # ADMIN REJECT
-    # =====================================================
+    # =========================
 
     if data.startswith("reject:"):
 
@@ -1215,15 +1086,9 @@ async def buttons(
 
             return
 
+        payment_id = int(data.split(":")[1])
 
-        payment_id = int(
-            data.split(":")[1]
-        )
-
-        payment = get_payment(
-            payment_id
-        )
-
+        payment = get_payment(payment_id)
 
         if not payment:
 
@@ -1232,7 +1097,6 @@ async def buttons(
             )
 
             return
-
 
         if payment["status"] != "pending":
 
@@ -1243,12 +1107,10 @@ async def buttons(
 
             return
 
-
         update_payment_status(
             payment_id,
             "rejected"
         )
-
 
         await query.edit_message_text(
 
@@ -1261,7 +1123,6 @@ async def buttons(
             f"🧾 Txn ID: {payment['transaction_id']}"
         )
 
-
         try:
 
             await context.bot.send_message(
@@ -1269,23 +1130,26 @@ async def buttons(
                 chat_id=payment["user_id"],
 
                 text=(
+
                     "❌ Payment request rejected.\n\n"
+
                     f"💎 {payment['package_name']}\n"
                     f"🧾 Txn ID: {payment['transaction_id']}\n\n"
-                    "দয়া করে payment details check করে "
-                    "আবার চেষ্টা করুন।"
+
+                    "দয়া করে payment details check করে আবার চেষ্টা করুন।"
                 )
             )
 
         except Exception:
+
             pass
 
         return
 
 
-# =========================================================
+# =========================
 # TEXT HANDLER
-# =========================================================
+# =========================
 
 async def text_handler(
     update: Update,
@@ -1296,24 +1160,14 @@ async def text_handler(
 
     ensure_user(user_id)
 
-    state = context.user_data.get(
-        "state"
-    )
+    state = context.user_data.get("state")
 
-
-    # =====================================================
     # PLAYER ID
-    # =====================================================
-
     if state == "player":
 
         player_id = update.message.text.strip()
 
-
-        if (
-            not player_id.isdigit()
-            or not 5 <= len(player_id) <= 20
-        ):
+        if not player_id.isdigit() or not 5 <= len(player_id) <= 20:
 
             await update.message.reply_text(
                 "❌ শুধু সঠিক সংখ্যার Player ID দিন।"
@@ -1321,35 +1175,24 @@ async def text_handler(
 
             return
 
+        context.user_data["player_id"] = player_id
 
-        context.user_data["player_id"] = (
-            player_id
-        )
-
-        context.user_data["state"] = (
-            "package"
-        )
-
+        context.user_data["state"] = "package"
 
         await update.message.reply_text(
+
             f"✅ Player ID: {player_id}\n\n"
             "💎 Package নির্বাচন করুন:",
+
             reply_markup=package_menu()
         )
 
         return
 
-
-    # =====================================================
     # TRANSACTION ID
-    # =====================================================
-
     if state == "transaction_id":
 
-        transaction_id = (
-            update.message.text.strip()
-        )
-
+        transaction_id = update.message.text.strip()
 
         if not transaction_id:
 
@@ -1359,30 +1202,21 @@ async def text_handler(
 
             return
 
+        package_key = context.user_data.get("package")
 
-        package_key = context.user_data.get(
-            "package"
-        )
-
-        player_id = context.user_data.get(
-            "player_id"
-        )
-
+        player_id = context.user_data.get("player_id")
 
         if not package_key or not player_id:
 
             await update.message.reply_text(
-                "❌ Order information পাওয়া যায়নি। "
+
+                "❌ Order information পাওয়া যায়নি।\n"
                 "আবার /start করুন।"
             )
 
             return
 
-
-        package = PACKAGES[
-            package_key
-        ]
-
+        package = PACKAGES[package_key]
 
         payment_id = create_payment(
 
@@ -1399,9 +1233,7 @@ async def text_handler(
             transaction_id=transaction_id
         )
 
-
         context.user_data.clear()
-
 
         await update.message.reply_text(
 
@@ -1418,64 +1250,51 @@ async def text_handler(
             reply_markup=main_menu()
         )
 
-
-        # =================================================
         # SEND PAYMENT REQUEST TO ADMIN
-        # =================================================
 
         if ADMIN_USER_ID:
 
             admin_keyboard = InlineKeyboardMarkup([
 
                 [
+
                     InlineKeyboardButton(
                         "✅ APPROVE",
-                        callback_data=
-                        f"approve:{payment_id}"
+                        callback_data=f"approve:{payment_id}"
                     ),
 
                     InlineKeyboardButton(
                         "❌ REJECT",
-                        callback_data=
-                        f"reject:{payment_id}"
+                        callback_data=f"reject:{payment_id}"
                     )
                 ]
-
             ])
-
 
             try:
 
                 await context.bot.send_message(
 
-                    chat_id=int(
-                        ADMIN_USER_ID
-                    ),
+                    chat_id=int(ADMIN_USER_ID),
 
                     text=(
 
                         "💳 NEW PAYMENT REQUEST\n\n"
 
                         f"📋 Payment ID: #{payment_id}\n"
-
                         f"👤 User ID: {user_id}\n"
-
                         f"🆔 Player ID: {player_id}\n"
-
                         f"💎 Package: {package['name']}\n"
-
                         f"💵 Amount: ৳{package['selling_price']}\n"
-
                         f"🧾 Txn ID: {transaction_id}\n\n"
 
-                        "⚠️ Nagad app-এ payment "
-                        "নিজে verify করে তারপর Approve করুন।"
+                        "⚠️ Nagad app-এ payment নিজে verify করে "
+                        "তারপর Approve করুন।"
                     ),
 
                     reply_markup=admin_keyboard
                 )
 
-            except Exception as e:
+            except Exception:
 
                 log.exception(
                     "Failed to notify admin"
@@ -1483,10 +1302,7 @@ async def text_handler(
 
         return
 
-
-    # =====================================================
     # DEFAULT
-    # =====================================================
 
     await update.message.reply_text(
         "নিচের menu ব্যবহার করুন 👇",
@@ -1494,9 +1310,9 @@ async def text_handler(
     )
 
 
-# =========================================================
+# =========================
 # MAIN
-# =========================================================
+# =========================
 
 def main():
 
@@ -1508,37 +1324,21 @@ def main():
         .build()
     )
 
-
     app.add_handler(
-        CommandHandler(
-            "start",
-            start
-        )
+        CommandHandler("start", start)
     )
 
-
     app.add_handler(
-        CommandHandler(
-            "help",
-            help_cmd
-        )
+        CommandHandler("help", help_cmd)
     )
 
-
     app.add_handler(
-        CommandHandler(
-            "ping",
-            ping
-        )
+        CommandHandler("ping", ping)
     )
 
-
     app.add_handler(
-        CallbackQueryHandler(
-            buttons
-        )
+        CallbackQueryHandler(buttons)
     )
-
 
     app.add_handler(
         MessageHandler(
@@ -1547,18 +1347,12 @@ def main():
         )
     )
 
-
     log.info(
         "Game TopUp BD bot started"
     )
 
-
     app.run_polling()
 
-
-# =========================================================
-# RUN
-# =========================================================
 
 if __name__ == "__main__":
     main()
