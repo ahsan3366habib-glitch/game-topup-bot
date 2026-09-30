@@ -1,163 +1,217 @@
 <!doctype html>
-<html lang="en">
+<html lang="bn">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <title>CHATNI TOP UP</title>
-  <meta name="theme-color" content="#090616">
+  <title>CHATNI TOP UP — চাটনি টপআপ</title>
+  <meta name="theme-color" content="#070a1d">
   <link rel="stylesheet" href="/website/style.css">
 </head>
 <body>
-<div class="app-shell">
+<div class="site">
 
   <aside class="sidebar">
     <div class="brand">
-      <img src="/website/logo.png" onerror="this.style.display='none'" alt="CHATNI">
-      <div><b>CHATNI</b><span>TOP UP</span></div>
+      <img src="/website/logo.png" alt="CHATNI TOP UP" onerror="this.classList.add('broken')">
+      <div><strong>CHATNI</strong><b>TOP UP</b><small>চাটনি টপআপ</small></div>
     </div>
-    <div class="menu-title">MENU</div>
-    <button class="side-link active" data-page="home">⌂ <span>Home</span></button>
-    <button class="side-link" data-page="topup">💎 <span>Topup</span></button>
-    <button class="side-link" data-page="orders">🧾 <span>Trajection</span></button>
-    <button class="side-link" data-page="support">💬 <span>Support</span></button>
-    <button class="side-link" data-page="settings">⚙ <span>Setting</span></button>
-    <div class="sidebar-foot">Premium Benefits<br><small>Fast delivery, special offers<br>& premium support.</small></div>
+    <nav class="side-nav">
+      <button class="side-item active" data-page="home"><i>⌂</i>Home</button>
+      <button class="side-item" data-page="topup"><i>💎</i>Topup</button>
+      <button class="side-item" data-page="orders"><i>▣</i>Trajection</button>
+      <button class="side-item" data-page="live"><i>💬</i>Live Order <em id="liveBadge">3</em></button>
+      <button class="side-item" data-page="support"><i>♧</i>Support</button>
+      <button class="side-item" data-page="settings"><i>⚙</i>Setting</button>
+    </nav>
+    <div class="premium-box">
+      <div class="crown">♛</div>
+      <button class="premium-close">×</button>
+      <h3>Premium<br>User Benefits</h3>
+      <p>✓ কনফার্ম ডিসকাউন্ট</p>
+      <p>✓ ফাস্ট সার্ভিস</p>
+      <p>✓ এক্সক্লুসিভ অফার</p>
+      <p>✓ প্রাধান্য সাপোর্ট</p>
+      <button class="glow-btn">Upgrade Now →</button>
+    </div>
+    <div class="side-slogan">Play More<br><b>Top Up More</b></div>
   </aside>
 
   <main class="main">
     <header class="topbar">
       <div class="mobile-brand">CHATNI <span>TOP UP</span></div>
-      <div class="search-wrap">⌕<input id="searchInput" placeholder="Search games, packages..."></div>
-      <div class="account-area">
-        <span id="userBadge" class="user-badge">Guest</span>
-        <button id="authBtn" class="btn small">Login</button>
+      <div class="search">
+        <span>⌕</span><input id="searchInput" placeholder="Search for games, packages, or services...">
       </div>
+      <button class="icon-btn notify" title="Notifications">♟<b>3</b></button>
+      <div class="balance">💎 <span>৳ 320</span><button>＋</button></div>
+      <button class="account" id="authBtn">
+        <img src="/website/hero.jpg" alt="">
+        <span><b id="userName">Ahsan</b><small id="userType">Premium User</small></span>
+        <i>⌄</i>
+      </button>
     </header>
 
     <section id="homePage" class="page active">
-      <section class="hero">
-        <div class="hero-copy">
-          <div class="eyebrow">LIVE TOP UP SERVICE</div>
-          <h1>Level Up Your<br><strong>Gaming Experience</strong></h1>
-          <p>Fast, secure and reliable game top-up service. Get your Free Fire diamonds instantly.</p>
-          <div class="hero-actions">
-            <button class="btn primary" onclick="openPage('topup')">⚡ Top Up Now</button>
-            <button class="btn ghost" onclick="openPage('orders')">View Orders</button>
+      <section class="hero-card">
+        <div class="hero-bg"></div>
+        <div class="hero-content">
+          <div class="hero-brand">CHATNI <span>TOP UP</span></div>
+          <div class="hero-bangla">চাটনি টপআপ</div>
+          <h1>“পেমেন্ট হোক আরও সহজ,<br><span>টপআপ হোক আরও নিরাপদ!”</span></h1>
+          <div class="hero-features">
+            <div>ϟ <b>Instant<br>Delivery</b></div>
+            <div>♢ <b>100% Secure<br>& Trusted</b></div>
+            <div>♙ <b>24/7<br>Customer Support</b></div>
           </div>
-          <div class="benefits">
-            <div>⚡ <b>Fast Delivery</b><span>Quick manual top-up</span></div>
-            <div>✓ <b>Secure Payment</b><span>bKash • Nagad • Upay</span></div>
-            <div>♛ <b>Premium Service</b><span>Dedicated support</span></div>
-          </div>
+          <button class="glow-btn large" onclick="openPage('topup')">Explore Packages →</button>
         </div>
-        <div class="hero-photo"><img src="/website/hero.jpg" alt="CHATNI TOP UP"></div>
-      </section>
-
-      <section class="section">
-        <div class="section-head"><div><small>GAMES</small><h2>Popular Games</h2></div><button class="text-btn" onclick="openPage('topup')">View All →</button></div>
-        <div class="game-grid">
-          <button class="game-card" onclick="selectGame()"><img src="/website/banner1.jpg" alt=""><h3>Free Fire Diamonds & Membership</h3><span>→</span></button>
-          <button class="game-card" onclick="selectGame()"><img src="/website/banner2.jpg" alt=""><h3>Free Fire MAX Top Up Available</h3><span>→</span></button>
-          <button class="game-card" onclick="selectGame()"><img src="/website/banner3.jpg" alt=""><h3>Gaming Top Up</h3><span>Premium packages →</span></button>
+        <div class="hero-photo-wrap">
+          <img src="/website/hero.jpg" alt="CHATNI TOP UP" class="hero-photo"
+               onerror="this.closest('.hero-photo-wrap').classList.add('image-missing')">
+          <div class="photo-label">CHATNI TOP UP</div>
         </div>
       </section>
 
       <section class="section">
-        <div class="section-head"><div><small>FREE FIRE</small><h2>Featured Packages</h2></div><button class="text-btn" onclick="openPage('topup')">See All →</button></div>
-        <div id="featuredPackages" class="package-grid"></div>
+        <div class="section-title"><div><span>🎮</span><h2>Popular Games</h2></div><button onclick="openPage('topup')">View All Games →</button></div>
+        <div class="games-row">
+          <button class="game-card selected"><span class="game-icon ff">ϟ</span><b>Free Fire</b></button>
+          <button class="game-card"><span class="game-icon pubg">PUBG</span><b>PUBG Mobile</b></button>
+          <button class="game-card"><span class="game-icon efootball">e</span><b>eFootball</b></button>
+          <button class="game-card"><span class="game-icon cod">COD</span><b>Call of Duty</b></button>
+          <button class="game-card"><span class="game-icon roblox">◈</span><b>Roblox</b></button>
+          <button class="game-card"><span class="game-icon valo">V</span><b>Valorant</b></button>
+          <button class="game-card"><span class="game-icon genshin">✦</span><b>Genshin Impact</b></button>
+          <button class="game-card"><span class="game-icon coc">♜</span><b>Clash of Clans</b></button>
+        </div>
       </section>
 
-      <section class="section">
-        <div class="section-head"><div><small>DEMO</small><h2>Customer Reviews</h2></div></div>
-        <div class="review-grid">
-          <div class="review"><b>★★★★★</b><p>Fast response and smooth service.</p><small>Demo review</small></div>
-          <div class="review"><b>★★★★★</b><p>Payment process was easy.</p><small>Demo review</small></div>
-          <div class="review"><b>★★★★★</b><p>Support replied quickly.</p><small>Demo review</small></div>
+      <section class="section package-section">
+        <div class="section-title">
+          <div><span>🔥</span><h2>Topup Packages <small>— Free Fire</small></h2></div>
+        </div>
+        <div class="category-tabs">
+          <button class="active" data-cat="diamonds">Diamonds</button>
+          <button data-cat="membership">Weekly</button>
+          <button data-cat="monthly">Monthly</button>
+          <button data-cat="levelup">Level Up Pass</button>
+        </div>
+        <div id="homePackages" class="package-grid"></div>
+      </section>
+
+      <section class="service-strip">
+        <div>🎁 <b>প্রতিটি টপআপে থাকছে<br>বিশেষ ডিসকাউন্ট!</b></div>
+        <div>ϟ <b>Fast<br>Delivery</b></div>
+        <div>♢ <b>Safe<br>& Secure</b></div>
+        <div>♙ <b>24/7<br>Support</b></div>
+        <button class="glow-btn" onclick="openPage('topup')">♛ Join Now →</button>
+      </section>
+
+      <section class="section reviews-section">
+        <div class="section-title"><div><span>⭐</span><h2>Customer Reviews</h2></div></div>
+        <div class="reviews">
+          <article><div class="stars">★★★★★</div><p>অনেক দ্রুত ডেলিভারি পেয়েছি। সার্ভিস একদম স্মুথ।</p><b>Rafid_07</b></article>
+          <article><div class="stars">★★★★★</div><p>Payment করার পর দ্রুত আমার ডায়মন্ড পেয়েছি।</p><b>Sakib_05</b></article>
+          <article><div class="stars">★★★★★</div><p>Support খুব দ্রুত reply করেছে। ধন্যবাদ!</p><b>Tawhid_11</b></article>
         </div>
       </section>
     </section>
 
     <section id="topupPage" class="page">
-      <div class="page-title"><small>FREE FIRE</small><h1>Top Up</h1><p>Choose your package and submit your order.</p></div>
+      <div class="page-heading"><span>FREE FIRE</span><h1>Topup Center</h1><p>Diamond Topup, Membership এবং Level Up Pass আলাদা সেকশনে।</p></div>
+      <div class="big-category-grid">
+        <button onclick="showCategory('diamonds')"><strong>💎 Diamond Topup</strong><small>25 → 2530 Diamonds</small><b>Open →</b></button>
+        <button onclick="showCategory('membership')"><strong>🎁 Membership</strong><small>Weekly & Weekly Lite</small><b>Open →</b></button>
+        <button onclick="showCategory('levelup')"><strong>🎫 Level Up Pass</strong><small>Level Up-6 → Level Up-30</small><b>Open →</b></button>
+      </div>
+      <div class="category-title"><h2 id="categoryTitle">💎 Diamond Topup</h2></div>
       <div id="allPackages" class="package-grid"></div>
     </section>
 
     <section id="ordersPage" class="page">
-      <div class="page-title"><small>TRAJECTION</small><h1>My Orders</h1><p>Track your payment and top-up status.</p></div>
-      <div id="myOrdersList" class="orders-list"><div class="empty">Login to view your orders.</div></div>
+      <div class="page-heading"><span>TRAJECTION</span><h1>My Orders</h1><p>তোমার সব order এবং status এখানে দেখা যাবে।</p></div>
+      <div id="myOrdersList" class="orders-list"><div class="empty">Login করলে তোমার order দেখা যাবে।</div></div>
+    </section>
+
+    <section id="livePage" class="page">
+      <div class="page-heading"><span>LIVE ORDER</span><h1>Live Orders</h1><p>সাম্প্রতিক top-up activity.</p></div>
+      <div id="liveOrdersFull" class="live-list"></div>
     </section>
 
     <section id="supportPage" class="page">
-      <div class="page-title"><small>HELP</small><h1>Support</h1><p>Need help with an order? Contact us.</p></div>
+      <div class="page-heading"><span>SUPPORT</span><h1>Live Chat / Support</h1><p>যেকোনো সমস্যায় আমাদের সাথে যোগাযোগ করো।</p></div>
       <div class="support-grid">
-        <a class="support-card" href="https://t.me/Ahsanvai10" target="_blank">✈️ <b>Telegram</b><span>@Ahsanvai10</span></a>
-        <a class="support-card" href="https://wa.me/8801410897399" target="_blank">💬 <b>WhatsApp</b><span>01410897399</span></a>
-        <div class="support-card">💳 <b>Payment</b><span>Send Money: bKash / Nagad / Upay</span></div>
+        <a href="https://t.me/Ahsanvai10" target="_blank">✈️ <b>Telegram</b><small>@Ahsanvai10</small></a>
+        <a href="https://wa.me/8801410897399" target="_blank">💬 <b>WhatsApp</b><small>01410897399</small></a>
+        <div>💳 <b>Payment Support</b><small>bKash • Nagad • Upay</small></div>
       </div>
     </section>
 
     <section id="settingsPage" class="page">
-      <div class="page-title"><small>ACCOUNT</small><h1>Setting</h1><p>Manage your account.</p></div>
+      <div class="page-heading"><span>ACCOUNT</span><h1>Setting</h1><p>Account এবং website settings.</p></div>
       <div class="settings-card">
-        <div id="settingsUser">You are browsing as Guest.</div>
-        <button id="settingsAuth" class="btn primary">Login / Signup</button>
-        <button id="logoutBtn" class="btn danger hidden">Logout</button>
+        <div><b>Account</b><p id="settingsUser">Guest</p></div>
+        <button id="settingsAuth" class="glow-btn">Login / Signup</button>
+        <button id="logoutBtn" class="danger-btn hidden">Logout</button>
       </div>
     </section>
   </main>
 
+  <aside class="rightbar">
+    <section class="right-card">
+      <div class="right-title"><b>♛ Live Order</b><button onclick="openPage('live')">View All →</button></div>
+      <div id="liveOrdersSide"></div>
+    </section>
+    <section class="right-card chat-card">
+      <div class="right-title"><b>🟣 Live Chat / Support</b><span class="online">● Online</span></div>
+      <p class="chat-sub">Need help? We're here for you!</p>
+      <div class="chat-msg"><span>👨🏻</span><p><b>Admin</b><small>Hello! How can I help you?</small></p><time>2m ago</time></div>
+      <div class="chat-msg"><span>👨🏽</span><p><b>Rakib_98</b><small>My order is processing...</small></p><time>1m ago</time></div>
+      <div class="chat-msg"><span>👨🏻</span><p><b>Admin</b><small>Please wait, it will be completed soon. ✅</small></p><time>Now</time></div>
+      <div class="chat-input"><input placeholder="Type a message..."><button>➤</button></div>
+    </section>
+    <section class="right-card">
+      <div class="right-title"><b>♛ Latest Announcements</b><button>View All →</button></div>
+      <div class="announcement"><i>♛</i><p><b>New Discount Offer!</b><small>Get special offer on selected packages.</small></p><time>Today</time></div>
+      <div class="announcement"><i>◈</i><p><b>Server Maintenance</b><small>Short maintenance notice.</small></p><time>Today</time></div>
+      <div class="announcement"><i>৳</i><p><b>New Payment Method</b><small>Now support Nagad, Rocket & bKash.</small></p><time>Today</time></div>
+    </section>
+  </aside>
+
   <nav class="bottom-nav">
-    <button class="nav-btn active" data-page="home">⌂<span>Home</span></button>
-    <button class="nav-btn" data-page="topup">💎<span>Topup</span></button>
-    <button class="nav-btn" data-page="orders">🧾<span>Trajection</span></button>
-    <button class="nav-btn" data-page="support">💬<span>Support</span></button>
-    <button class="nav-btn" data-page="settings">⚙<span>Setting</span></button>
+    <button class="active" data-page="home">⌂<span>Home</span></button>
+    <button data-page="topup">💎<span>Topup</span></button>
+    <button data-page="orders">▣<span>Trajection</span></button>
+    <button class="center-nav" data-page="live">♛<span>Live</span></button>
+    <button data-page="support">♧<span>Support</span></button>
+    <button data-page="settings">⚙<span>Setting</span></button>
   </nav>
 </div>
 
 <div id="authModal" class="modal">
   <div class="modal-box">
     <button class="close" onclick="closeModal('authModal')">×</button>
-    <div class="tabs"><button id="loginTab" class="tab active">Login</button><button id="registerTab" class="tab">Signup</button></div>
-    <form id="loginForm">
-      <h2>Welcome back</h2>
-      <input id="loginEmail" type="email" placeholder="Email" required>
-      <input id="loginPassword" type="password" placeholder="Password" required>
-      <button class="btn primary full">LOGIN</button>
-    </form>
-    <form id="registerForm" class="hidden">
-      <h2>Create account</h2>
-      <input id="registerName" placeholder="Name" required>
-      <input id="registerEmail" type="email" placeholder="Email" required>
-      <input id="registerPassword" type="password" placeholder="Password (6+ characters)" minlength="6" required>
-      <button class="btn primary full">SIGN UP</button>
-    </form>
-    <div id="authMsg" class="form-msg"></div>
+    <div class="modal-tabs"><button id="loginTab" class="active">Login</button><button id="registerTab">Signup</button></div>
+    <form id="loginForm"><h2>Welcome Back</h2><input id="loginEmail" type="email" placeholder="Email" required><input id="loginPassword" type="password" placeholder="Password" required><button class="glow-btn full">LOGIN</button></form>
+    <form id="registerForm" class="hidden"><h2>Create Account</h2><input id="registerName" placeholder="Name" required><input id="registerEmail" type="email" placeholder="Email" required><input id="registerPassword" type="password" minlength="6" placeholder="Password" required><button class="glow-btn full">SIGN UP</button></form>
+    <div id="authMsg"></div>
   </div>
 </div>
 
 <div id="orderModal" class="modal">
   <div class="modal-box">
     <button class="close" onclick="closeModal('orderModal')">×</button>
-    <div class="eyebrow">FREE FIRE ORDER</div>
-    <h2 id="selectedPackage">Package</h2>
-    <div class="price-big">৳<span id="selectedPrice">0</span></div>
+    <span>FREE FIRE ORDER</span><h2 id="selectedPackage">Package</h2><div class="order-price">৳<span id="selectedPrice">0</span></div>
     <form id="orderForm">
       <input id="playerUid" inputmode="numeric" placeholder="Free Fire UID" required>
-      <select id="paymentMethod" required>
-        <option value="">Select payment method</option>
-        <option value="bKash">bKash — 01316897399</option>
-        <option value="Nagad">Nagad — 01410897399</option>
-        <option value="Upay">Upay — 01316897399</option>
-      </select>
-      <div id="paymentInstruction" class="payment-box">Payment করতে <b>Send Money</b> করুন।</div>
+      <select id="paymentMethod" required><option value="">Select payment method</option><option>bKash</option><option>Nagad</option><option>Upay</option></select>
+      <div class="payment-info" id="paymentInfo">Payment করতে <b>Send Money</b> করুন।</div>
       <input id="transactionId" placeholder="Transaction ID" required>
-      <button class="btn primary full">SUBMIT ORDER</button>
+      <button class="glow-btn full">SUBMIT ORDER</button>
     </form>
-    <div id="orderMsg" class="form-msg"></div>
+    <div id="orderMsg"></div>
   </div>
 </div>
-
 <div id="toast" class="toast"></div>
 <script src="/website/script.js"></script>
 </body>
