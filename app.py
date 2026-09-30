@@ -19,6 +19,7 @@ from flask import (
 # =========================================================
 
 APP = Flask(__name__)
+app = APP
 
 APP.secret_key = os.getenv(
     "SECRET_KEY",
