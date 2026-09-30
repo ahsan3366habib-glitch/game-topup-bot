@@ -1,52 +1,122 @@
 <!doctype html>
 <html lang="bn">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>TopUpZone BD — Free Fire Top Up</title>
-<meta name="description" content="TopUpZone BD — Fast, safe manual Free Fire top up in Bangladesh.">
-<link rel="stylesheet" href="/static/style.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CHATNI TOP UP — Gaming Dashboard</title>
+<meta name="description" content="CHATNI TOP UP — Fast, safe manual game top up in Bangladesh.">
+<link rel="stylesheet" href="./style.css">
 </head>
 <body>
-<header class="nav">
-  <a class="brand" href="#home"><img src="/static/logo.png"><span>TopUpZone <b>BD</b><small>FAST • SAFE • TRUSTED</small></span></a>
-  <button class="menu" onclick="document.body.classList.toggle('nav-open')">☰</button>
-  <nav>
-    <a href="#home">Home</a><a href="#games">Games</a><a href="#topup">⚡ Top Up</a><a href="#orders">My Orders</a>
-    <a href="#login" id="loginLink">Login</a><a href="#signup" id="signupLink">Sign Up</a><a href="/admin/login" class="admin-btn">👑 Admin Panel</a>
+<header class="topbar">
+  <a class="brand" href="#home"><img src="./logo.png" onerror="this.style.display='none'"><span>CHATNI <b>TOP UP</b><small>FAST • SAFE • TRUSTED</small></span></a>
+  <nav class="desktop-nav">
+    <a class="nav-item active" href="#home">⌂ <span>Home</span></a>
+    <a class="nav-item" href="#topup">⚡ <span>Topup</span></a>
+    <a class="nav-item" href="#orders">🧾 <span>Trajection</span></a>
+    <a class="nav-item" href="#live">🔴 <span>Live Order</span></a>
+    <a class="nav-item" href="#support">💬 <span>Support</span></a>
+    <a class="nav-item" href="#settings">⚙ <span>Setting</span></a>
   </nav>
+  <div class="account-actions"><a href="#login">Login</a><a class="signup" href="#signup">Sign Up</a></div>
 </header>
+
 <main id="home">
-<section class="hero-slider">
-  <div class="slides">
-    <img class="slide active" src="/static/banners/banner1.jpg" alt="TopUpZone BD Free Fire banner">
-    <img class="slide" src="/static/banners/banner2.jpg" alt="TopUpZone BD Free Fire diamonds banner">
-    <img class="slide" src="/static/banners/banner3.jpg" alt="TopUpZone BD Free Fire top up banner">
+<section class="hero">
+  <div class="hero-copy">
+    <div class="eyebrow">🎮 PREMIUM GAMING TOP-UP</div>
+    <h1>Power Up Your <span>Game</span></h1>
+    <p>Fast, safe & trusted manual top-up service. Choose your package, pay and send your transaction ID.</p>
+    <div class="hero-actions"><a class="primary" href="#topup">⚡ Start Topup</a><a class="secondary" href="#orders">🧾 My Orders</a></div>
+    <div class="hero-trust"><span>⚡ Fast Delivery</span><span>🛡️ Secure Payment</span><span>🎧 Support</span></div>
   </div>
-  <button class="prev" onclick="moveSlide(-1)">‹</button><button class="next" onclick="moveSlide(1)">›</button>
-  <div class="dots"><span class="dot active" onclick="goSlide(0)"></span><span class="dot" onclick="goSlide(1)"></span><span class="dot" onclick="goSlide(2)"></span></div>
+  <div class="hero-art">
+    <div class="eye-glow"></div>
+    <div class="hero-ring ring1"></div><div class="hero-ring ring2"></div>
+    <img src="./hero-cutout.png" class="hero-person" alt="CHATNI TOP UP">
+  </div>
 </section>
-<section class="trust"><div>⚡ <b>Instant Delivery</b><small>দ্রুত টপ-আপ</small></div><div>🛡️ <b>100% Safe</b><small>নিরাপদ লেনদেন</small></div><div>🏷️ <b>Best Price</b><small>সর্বনিম্ন দাম</small></div><div>🎧 <b>24/7 Support</b><small>সবসময় পাশে আছি</small></div><div>💚 <b>WhatsApp</b><small>01410897399 / 01316897399</small></div><div>✈️ <b>Telegram</b><small>@Ahsanvai10</small></div></section>
-<section id="games" class="section"><div class="heading"><small>SELECT GAME</small><h2>Choose Your Game</h2></div><div class="games"><button class="game active">🔥 <b>Free Fire</b><small>Diamonds & Pass</small></button><button class="game disabled">🎯 <b>PUBG Mobile</b><small>Coming Soon</small></button><button class="game disabled">⚔️ <b>Mobile Legends</b><small>Coming Soon</small></button></div></section>
-<section id="topup" class="section"><div class="heading"><small>FREE FIRE</small><h2>Top Up Packages</h2></div><div class="tabs"><button class="tab active" onclick="filterPackages('all',this)">All</button><button class="tab" onclick="filterPackages('level',this)">🎫 Level Up Pass</button><button class="tab" onclick="filterPackages('member',this)">🎁 Membership</button><button class="tab" onclick="filterPackages('diamond',this)">💎 Diamonds</button></div><div id="packageGrid" class="packages"></div></section>
-<section id="order" class="section order-section"><div class="heading"><small>ORDER</small><h2>Place Your Order</h2></div><div class="order-layout"><form id="orderForm" class="card"><label>Free Fire UID<input id="uid" inputmode="numeric" pattern="[0-9]{5,20}" placeholder="আপনার Free Fire UID" required></label><label>Package<select id="package" required><option value="">Select package</option></select></label><div class="payment-box"><h3>Payment করতে Send Money করুন</h3><div class="pay-row"><b>bKash</b><strong>01316897399</strong></div><div class="pay-row"><b>Nagad</b><strong>01410897399</strong></div><div class="pay-row"><b>Upay</b><strong>01316897399</strong></div></div><label>Payment Method<select id="payment" required><option value="">Select payment method</option><option>bKash</option><option>Nagad</option><option>Upay</option></select></label><label>Transaction ID<input id="txn" placeholder="Payment-এর Txn ID" required></label><button class="primary" type="submit">🚀 Submit Order</button><p class="muted">Payment করার পর সঠিক Txn ID দিন। Admin payment verify করে manual top-up করবে।</p><div id="orderResult"></div></form><div class="card side-info"><h3>🛡️ Order নিরাপত্তা</h3><p>শুধু আপনার <b>UID</b> লাগবে। কোনো password/OTP কখনো দেবেন না।</p><h3>💬 Support</h3><p>WhatsApp: <b>01410897399</b><br>WhatsApp: <b>01316897399</b><br>Telegram: <b>@Ahsanvai10</b></p><a class="secondary" href="https://wa.me/8801410897399" target="_blank">WhatsApp Support</a></div></div></section>
-<section id="orders" class="section"><div class="heading"><small>ACCOUNT</small><h2>My Orders</h2></div><div id="ordersBox" class="card"><p class="muted">Login করলে আপনার orders এখানে দেখা যাবে।</p></div></section>
-<section id="login" class="auth section"><div class="auth-card"><div class="heading"><small>ACCOUNT</small><h2>Login</h2></div><form id="loginForm"><input id="loginEmail" type="email" placeholder="Email" required><input id="loginPassword" type="password" placeholder="Password" required><button class="primary">Login</button></form><p>Account নেই? <a href="#signup">Sign Up</a></p><div id="loginMsg"></div></div></section>
-<section id="signup" class="auth section"><div class="auth-card"><div class="heading"><small>NEW ACCOUNT</small><h2>Sign Up</h2></div><form id="signupForm"><input id="signupName" placeholder="Name" required><input id="signupEmail" type="email" placeholder="Email" required><input id="signupPassword" type="password" minlength="6" placeholder="Password (minimum 6)" required><button class="primary">Create Account</button></form><div id="signupMsg"></div></div></section>
+
+<section class="ticker"><div class="ticker-track"><span>💎 FREE FIRE DIAMONDS</span><span>🎁 MEMBERSHIP</span><span>🎫 LEVEL UP PASS</span><span>⚡ FAST DELIVERY</span><span>🛡️ SAFE PAYMENT</span><span>💎 FREE FIRE DIAMONDS</span><span>🎁 MEMBERSHIP</span><span>🎫 LEVEL UP PASS</span></div></section>
+
+<section id="topup" class="section">
+  <div class="section-head"><div><small>SELECT YOUR GAME</small><h2>Popular Games</h2></div></div>
+  <div class="game-grid">
+    <button class="game-card active"><div class="game-icon ff">🔥</div><b>Free Fire</b><small>Diamonds & Pass</small></button>
+    <button class="game-card"><div class="game-icon pubg">PUBG</div><b>PUBG Mobile</b><small>UC Top Up</small></button>
+    <button class="game-card"><div class="game-icon efoot">⚽</div><b>eFootball</b><small>Coins</small></button>
+    <button class="game-card"><div class="game-icon cod">COD</div><b>Call of Duty</b><small>CP Top Up</small></button>
+    <button class="game-card"><div class="game-icon roblox">R</div><b>Roblox</b><small>Robux</small></button>
+    <button class="game-card"><div class="game-icon valo">V</div><b>Valorant</b><small>VP Top Up</small></button>
+    <button class="game-card"><div class="game-icon genshin">✦</div><b>Genshin Impact</b><small>Genesis Crystals</small></button>
+    <button class="game-card"><div class="game-icon coc">⚔</div><b>Clash of Clans</b><small>Gems</small></button>
+  </div>
+</section>
+
+<section class="section packages-section">
+  <div class="section-head"><small>FREE FIRE</small><h2>Choose Your Package</h2></div>
+  <div class="category-tabs">
+    <button class="tab active" data-cat="diamond" onclick="filterPackages('diamond')">💎 Diamonds</button>
+    <button class="tab" data-cat="member" onclick="filterPackages('member')">🎁 Membership</button>
+    <button class="tab" data-cat="level" onclick="filterPackages('level')">🎫 Level Up Pass</button>
+  </div>
+  <div id="packageGrid" class="package-grid"></div>
+</section>
+
+<section id="order" class="section">
+  <div class="section-head"><small>SECURE CHECKOUT</small><h2>Place Your Order</h2></div>
+  <div class="order-layout">
+    <form id="orderForm" class="order-card">
+      <label>Free Fire UID<input id="uid" inputmode="numeric" placeholder="আপনার Free Fire UID" required></label>
+      <label>Package<select id="package" required></select></label>
+      <div class="payment-box"><h3>Payment করতে Send Money করুন</h3><div><b>bKash</b><strong>01316897399</strong></div><div><b>Nagad</b><strong>01410897399</strong></div><div><b>Upay</b><strong>01316897399</strong></div></div>
+      <label>Payment Method<select id="payment" required><option value="">Select</option><option>bKash</option><option>Nagad</option><option>Upay</option></select></label>
+      <label>Transaction ID<input id="txn" placeholder="Payment-এর Txn ID" required></label>
+      <button class="primary full" type="submit">🚀 Submit Order</button>
+      <div id="orderResult"></div>
+    </form>
+    <div class="order-card security"><div class="big-icon">🛡️</div><h3>Safe Order</h3><p>শুধু আপনার UID লাগবে। Password বা OTP কখনো দেবেন না।</p><a class="secondary full" href="https://wa.me/8801410897399" target="_blank">WhatsApp Support</a><p class="contact">Telegram: <b>@Ahsanvai10</b></p></div>
+  </div>
+</section>
+
+<section id="live" class="section">
+  <div class="section-head"><small>LIVE ACTIVITY</small><h2>Live Orders</h2></div>
+  <div class="live-grid">
+    <div class="live-card"><div class="live-title"><span class="pulse"></span> Live Order Feed</div><div id="liveOrders"></div></div>
+    <div class="announcement"><h3>📢 Announcements</h3><p>Free Fire top-up orders are processed manually after payment verification.</p><p>Support: WhatsApp 01410897399 / 01316897399</p><p>Telegram: @Ahsanvai10</p></div>
+  </div>
+</section>
+
+<section id="orders" class="section">
+  <div class="section-head"><small>ACCOUNT</small><h2>Trajection / My Orders</h2></div>
+  <div class="order-card"><div id="orderList" class="order-list"></div><p id="emptyOrders" class="muted">আপনার order এখানে দেখা যাবে।</p></div>
+</section>
+
+<section id="support" class="section">
+  <div class="section-head"><small>HELP CENTER</small><h2>Support & Live Chat</h2></div>
+  <div class="support-grid">
+    <div class="support-card"><span>💬</span><h3>WhatsApp</h3><p>01410897399<br>01316897399</p><a class="primary" href="https://wa.me/8801410897399" target="_blank">Chat Now</a></div>
+    <div class="support-card"><span>✈️</span><h3>Telegram</h3><p>@Ahsanvai10</p><a class="secondary" href="https://t.me/Ahsanvai10" target="_blank">Open Telegram</a></div>
+    <div class="support-card"><span>🤖</span><h3>Top Up Bot</h3><p>@TopUpZoneBD_bot</p><a class="secondary" href="https://t.me/TopUpZoneBD_bot" target="_blank">Open Bot</a></div>
+  </div>
+</section>
+
+<section class="section reviews">
+  <div class="section-head"><small>COMMUNITY</small><h2>Customer Reviews</h2></div>
+  <div class="review-grid">
+    <div class="review"><b>★★★★★</b><p>“Payment verify হওয়ার পর খুব সুন্দরভাবে top-up পেয়েছি।”</p><strong>— Customer</strong></div>
+    <div class="review"><b>★★★★★</b><p>“Package price clear এবং order process সহজ।”</p><strong>— Customer</strong></div>
+    <div class="review"><b>★★★★★</b><p>“Support থেকে দ্রুত reply পেয়েছি।”</p><strong>— Customer</strong></div>
+  </div>
+</section>
+
+<section id="login" class="section auth-section"><div class="auth-card"><div class="section-head"><small>ACCOUNT</small><h2>Login</h2></div><form id="loginForm"><input id="loginEmail" type="email" placeholder="Email" required><input id="loginPassword" type="password" placeholder="Password" required><button class="primary full">Login</button></form><div id="loginMsg"></div></div></section>
+<section id="signup" class="section auth-section"><div class="auth-card"><div class="section-head"><small>NEW ACCOUNT</small><h2>Sign Up</h2></div><form id="signupForm"><input id="signupName" placeholder="Name" required><input id="signupEmail" type="email" placeholder="Email" required><input id="signupPassword" type="password" minlength="6" placeholder="Password (minimum 6)" required><button class="primary full">Create Account</button></form><div id="signupMsg"></div></div></section>
+<section id="settings" class="section"><div class="section-head"><small>SETTINGS</small><h2>Setting</h2></div><div class="settings-card"><p>CHATNI TOP UP</p><p>Support: @Ahsanvai10</p><a class="secondary" href="/admin/login">👑 Admin Panel</a></div></section>
 </main>
-<footer><div><b>TopUpZone BD</b><span>Fast • Safe • Trusted</span></div><div>Support: @Ahsanvai10</div><div>© 2026 TopUpZone BD. All rights reserved.</div></footer>
-<script>
-const packages=[
-['lu6','🎫 Level Up-6',50,'level'],['lu10','🎫 Level Up-10',80,'level'],['lu15','🎫 Level Up-15',80,'level'],['lu20','🎫 Level Up-20',80,'level'],['lu25','🎫 Level Up-25',80,'level'],['lu30','🎫 Level Up-30',130,'level'],['wlite','🎁 Weekly Lite',50,'member'],['weekly','🎁 Weekly Membership',170,'member'],['monthly','🎁 Monthly Membership',800,'member'],['d25','💎 25 Diamonds',25,'diamond'],['d50','💎 50 Diamonds',40,'diamond'],['d115','💎 115 Diamonds',85,'diamond'],['d240','💎 240 Diamonds',165,'diamond'],['d610','💎 610 Diamonds',410,'diamond'],['d1240','💎 1240 Diamonds',800,'diamond'],['d2530','💎 2530 Diamonds',1600,'diamond']];
-let selected=packages[9][0];
-function renderPackages(cat='all'){const g=document.getElementById('packageGrid');g.innerHTML=packages.filter(p=>cat==='all'||p[3]===cat).map(p=>`<button class="package ${p[0]===selected?'selected':''}" onclick="selectPackage('${p[0]}')"><span>${p[1]}</span><b>৳${p[2]}</b><small>Buy Now →</small></button>`).join('')}
-function selectPackage(k){selected=k;const p=packages.find(x=>x[0]===k);document.getElementById('package').value=p[0];renderPackages(currentCat)}
-let currentCat='all';function filterPackages(cat,el){currentCat=cat;document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));el.classList.add('active');renderPackages(cat)}
-const sel=document.getElementById('package');sel.innerHTML+='<option disabled>────────</option>'+packages.map(p=>`<option value="${p[0]}">${p[1]} — ৳${p[2]}</option>`).join('');renderPackages();
-let slide=0;function goSlide(i){slide=i;document.querySelectorAll('.slide').forEach((x,j)=>x.classList.toggle('active',j===slide));document.querySelectorAll('.dot').forEach((x,j)=>x.classList.toggle('active',j===slide))}function moveSlide(d){goSlide((slide+d+3)%3)}setInterval(()=>moveSlide(1),5000);
-async function post(url,data,msgEl){const r=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});let j={};try{j=await r.json()}catch{}if(!r.ok)throw new Error(j.error||'Request failed');return j}
-async function refreshOrders(){const box=document.getElementById('ordersBox');try{const r=await fetch('/api/my-orders');const j=await r.json();if(!j.authenticated){box.innerHTML='<p class="muted">My Orders দেখতে Login করুন।</p>';return}box.innerHTML=j.orders.length?j.orders.map(o=>`<div class="order-item"><b>#${o.id}</b> ${o.package_name}<span>UID: ${o.player_id}</span><strong>৳${o.amount}</strong><em>${o.status_label}</em></div>`).join(''):'<p class="muted">এখনও কোনো order নেই।' ;document.getElementById('loginLink').textContent='Logout'}catch{}}
-document.getElementById('orderForm').addEventListener('submit',async e=>{e.preventDefault();const p=packages.find(x=>x[0]===document.getElementById('package').value);if(!p){alert('Package select করুন');return}const box=document.getElementById('orderResult');box.textContent='Submitting...';try{const j=await post('/api/orders',{player_id:document.getElementById('uid').value.trim(),package_name:p[1],payment_method:document.getElementById('payment').value,transaction_id:document.getElementById('txn').value.trim()},box);box.innerHTML=`<div class="success">✅ Order #${j.order_id} submitted! Admin payment verify করবে।</div>`;document.getElementById('orderForm').reset();refreshOrders()}catch(err){box.innerHTML=`<div class="error">❌ ${err.message}</div>`}});
-document.getElementById('loginForm').addEventListener('submit',async e=>{e.preventDefault();try{await post('/api/login',{email:loginEmail.value,password:loginPassword.value});loginMsg.innerHTML='<div class="success">✅ Login successful.</div>';refreshOrders()}catch(err){loginMsg.innerHTML='<div class="error">❌ '+err.message+'</div>'}});
-document.getElementById('signupForm').addEventListener('submit',async e=>{e.preventDefault();try{await post('/api/register',{name:signupName.value,email:signupEmail.value,password:signupPassword.value});signupMsg.innerHTML='<div class="success">✅ Account created. এখন Login করুন।</div>';e.target.reset()}catch(err){signupMsg.innerHTML='<div class="error">❌ '+err.message+'</div>'}});
-refreshOrders();
-</script></body></html>
+
+<footer><b>CHATNI TOP UP</b><span>Fast • Safe • Trusted</span><small>© 2026 CHATNI TOP UP</small></footer>
+<nav class="mobile-nav"><a class="active" href="#home">⌂<span>Home</span></a><a href="#topup">⚡<span>Topup</span></a><a href="#orders">🧾<span>Trajection</span></a><a href="#live" class="live-nav">●<span>Live</span></a><a href="#support">💬<span>Support</span></a><a href="#settings">⚙<span>Setting</span></a></nav>
+<script src="./script.js"></script>
+</body>
+</html>

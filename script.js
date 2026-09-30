@@ -1,59 +1,19 @@
 const PACKAGES=[
- {k:"lu6",cat:"level",name:"Level Up-6",price:50},
- {k:"lu10",cat:"level",name:"Level Up-10",price:80},
- {k:"lu15",cat:"level",name:"Level Up-15",price:80},
- {k:"lu20",cat:"level",name:"Level Up-20",price:80},
- {k:"lu25",cat:"level",name:"Level Up-25",price:80},
- {k:"lu30",cat:"level",name:"Level Up-30",price:130},
- {k:"wlite",cat:"member",name:"Weekly Lite",price:50},
- {k:"weekly",cat:"member",name:"Weekly Membership",price:170},
- {k:"monthly",cat:"member",name:"Monthly Membership",price:800},
- {k:"d25",cat:"diamond",name:"25 Diamonds",price:25},
- {k:"d50",cat:"diamond",name:"50 Diamonds",price:40},
- {k:"d115",cat:"diamond",name:"115 Diamonds",price:85},
- {k:"d240",cat:"diamond",name:"240 Diamonds",price:165},
- {k:"d610",cat:"diamond",name:"610 Diamonds",price:410},
- {k:"d1240",cat:"diamond",name:"1240 Diamonds",price:800},
- {k:"d2530",cat:"diamond",name:"2530 Diamonds",price:1600}
+{k:"d25",cat:"diamond",name:"25 Diamonds",price:23},{k:"d50",cat:"diamond",name:"50 Diamonds",price:40},{k:"d115",cat:"diamond",name:"115 Diamonds",price:82},{k:"d240",cat:"diamond",name:"240 Diamonds",price:158},{k:"d610",cat:"diamond",name:"610 Diamonds",price:392},{k:"d1240",cat:"diamond",name:"1240 Diamonds",price:780},{k:"d2530",cat:"diamond",name:"2530 Diamonds",price:1560},
+{k:"weekly",cat:"member",name:"Weekly Membership",price:159},{k:"wlite",cat:"member",name:"Weekly Lite",price:45},{k:"monthly",cat:"member",name:"Monthly Membership",price:775},
+{k:"lu6",cat:"level",name:"Level Up-6",price:50},{k:"lu10",cat:"level",name:"Level Up-10",price:80},{k:"lu15",cat:"level",name:"Level Up-15",price:80},{k:"lu20",cat:"level",name:"Level Up-20",price:80},{k:"lu25",cat:"level",name:"Level Up-25",price:80},{k:"lu30",cat:"level",name:"Level Up-30",price:130}
 ];
-
-function renderPackages(cat="all"){
- const grid=document.getElementById("packageGrid");
- const select=document.getElementById("package");
- grid.innerHTML="";
- select.innerHTML='<option value="">Select a package</option>';
- PACKAGES.filter(p=>cat==="all"||p.cat===cat).forEach(p=>{
-   grid.innerHTML+=`<button class="package-card" type="button" onclick="choosePackage('${p.k}')"><small>${p.cat==="level"?"🎫 Level Up Pass":p.cat==="member"?"🎁 Membership":"💎 Diamonds"}</small><b>${p.name}</b><div class="price">৳${p.price}</div></button>`;
- });
- PACKAGES.forEach(p=>select.innerHTML+=`<option value="${p.k}">${p.name} — ৳${p.price}</option>`);
-}
-function filterPackages(cat){
- document.querySelectorAll(".tab").forEach(t=>t.classList.toggle("active",t.dataset.cat===cat));
- renderPackages(cat);
-}
-function choosePackage(k){
- document.getElementById("package").value=k;
- document.getElementById("order").scrollIntoView({behavior:"smooth"});
-}
-function getOrders(){return JSON.parse(localStorage.getItem("tz_orders")||"[]")}
-function saveOrders(o){localStorage.setItem("tz_orders",JSON.stringify(o))}
-function renderOrders(){
- const el=document.getElementById("orderList"); if(!el)return;
- const orders=getOrders();
- el.innerHTML=orders.length?orders.slice().reverse().map(o=>`<div class="order-row"><b>#${o.id}</b> · ${o.package}<br>UID: ${o.uid} · ৳${o.amount}<br><span class="status">${o.status}</span></div>`).join(""):"";
-}
-document.getElementById("orderForm").addEventListener("submit",e=>{
- e.preventDefault();
- const uid=document.getElementById("uid").value.trim();
- const key=document.getElementById("package").value;
- const p=PACKAGES.find(x=>x.k===key);
- const payment=document.getElementById("payment").value;
- const txn=document.getElementById("txn").value.trim();
- if(!/^\d{5,15}$/.test(uid)){alert("সঠিক Free Fire UID দিন।");return}
- if(!p||!payment||txn.length<4){alert("সব তথ্য পূরণ করুন।");return}
- const order={id:"TZ"+Date.now().toString().slice(-7),uid,package:p.name,amount:p.price,payment,txn,status:"Payment Pending",created:new Date().toLocaleString("bn-BD")};
- const orders=getOrders();orders.push(order);saveOrders(orders);renderOrders();
- alert(`✅ Order submitted!\nOrder ID: ${order.id}\nAdmin payment verify করে manual top-up করবেন।`);
- e.target.reset();
-});
-renderPackages();renderOrders();
+let currentCat="diamond";
+function renderPackages(cat=currentCat){currentCat=cat;const grid=document.getElementById("packageGrid");const select=document.getElementById("package");grid.innerHTML="";select.innerHTML='<option value="">Select a package</option>';PACKAGES.filter(p=>p.cat===cat).forEach(p=>{grid.innerHTML+=`<button class="package-card" type="button" onclick="choosePackage('${p.k}')"><small>${p.cat==="level"?"🎫 Level Up Pass":p.cat==="member"?"🎁 Membership":"💎 Diamonds"}</small><b>${p.name}</b><div class="price">৳${p.price}</div></button>`});PACKAGES.forEach(p=>select.innerHTML+=`<option value="${p.k}">${p.name} — ৳${p.price}</option>`)}
+function filterPackages(cat){document.querySelectorAll(".tab").forEach(t=>t.classList.toggle("active",t.dataset.cat===cat));renderPackages(cat)}
+function choosePackage(k){document.getElementById("package").value=k;document.getElementById("order").scrollIntoView({behavior:"smooth"})}
+function getOrders(){try{return JSON.parse(localStorage.getItem("chatni_orders")||"[]")}catch{return[]}}
+function saveOrders(o){localStorage.setItem("chatni_orders",JSON.stringify(o))}
+function renderOrders(){const el=document.getElementById("orderList"),empty=document.getElementById("emptyOrders");if(!el)return;const orders=getOrders();el.innerHTML=orders.slice().reverse().map(o=>`<div class="order-row"><b>#${o.id}</b> · ${o.package}<br>UID: ${o.uid} · ৳${o.amount}<br><span class="status">${o.status}</span></div>`).join("");if(empty)empty.style.display=orders.length?"none":"block"}
+function renderLive(){const el=document.getElementById("liveOrders");const names=["A***n","R***n","S***h","T***m","M***n","J***l"];const pk=["115 Diamonds","Weekly Membership","240 Diamonds","Level Up-10","610 Diamonds"];el.innerHTML=Array.from({length:6},(_,i)=>`<div class="live-row"><span>🟢 ${names[i]} • ${pk[i%pk.length]}</span><strong>Completed</strong></div>`).join("")}
+document.getElementById("orderForm").addEventListener("submit",e=>{e.preventDefault();const uid=document.getElementById("uid").value.trim(),key=document.getElementById("package").value,p=PACKAGES.find(x=>x.k===key),payment=document.getElementById("payment").value,txn=document.getElementById("txn").value.trim();if(!/^\d{5,15}$/.test(uid)){alert("সঠিক Free Fire UID দিন।");return}if(!p||!payment||txn.length<4){alert("সব তথ্য পূরণ করুন।");return}const order={id:"CT"+Date.now().toString().slice(-7),uid,package:p.name,amount:p.price,payment,txn,status:"Payment Pending",created:new Date().toLocaleString("bn-BD")};const orders=getOrders();orders.push(order);saveOrders(orders);renderOrders();document.getElementById("orderResult").innerHTML=`<div class="success">✅ Order #${order.id} submitted! Admin payment verify করে manual top-up করবেন।</div>`;e.target.reset()});
+async function apiPost(url,data){const r=await fetch(url,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(data)});let j={};try{j=await r.json()}catch{}if(!r.ok)throw new Error(j.error||"Request failed");return j}
+document.getElementById("loginForm").addEventListener("submit",async e=>{e.preventDefault();try{await apiPost("/api/login",{email:loginEmail.value,password:loginPassword.value});loginMsg.innerHTML='<div class="success">✅ Login successful.</div>'}catch(err){loginMsg.innerHTML='<div class="error">❌ '+err.message+'</div>'}});
+document.getElementById("signupForm").addEventListener("submit",async e=>{e.preventDefault();try{await apiPost("/api/register",{name:signupName.value,email:signupEmail.value,password:signupPassword.value});signupMsg.innerHTML='<div class="success">✅ Account created. এখন Login করুন।</div>';e.target.reset()}catch(err){signupMsg.innerHTML='<div class="error">❌ '+err.message+'</div>'}});
+renderPackages();renderOrders();renderLive();
+document.querySelectorAll(".mobile-nav a,.desktop-nav a").forEach(a=>a.addEventListener("click",()=>{document.querySelectorAll(".mobile-nav a").forEach(x=>x.classList.remove("active"));const m=document.querySelector(`.mobile-nav a[href="${a.getAttribute("href")}"]`);if(m)m.classList.add("active")}));
