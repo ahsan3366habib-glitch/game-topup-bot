@@ -1,4 +1,4 @@
-CHATNI TOP UP FINAL V6
-Upload/replace ROOT index.html, style.css, script.js.
-Also upload hero-cutout.png if present.
-Keep existing logo.png/banner assets.
+CHATNI TOP UP V5
+Replace the ROOT files in your GitHub repo: index.html, style.css, script.js, hero-cutout.png.
+Do not delete your existing logo.png/banner files.
+The website folder is included only as a backup copy.
